@@ -1,0 +1,151 @@
+/*---- General ----*/
+* {
+  box-sizing: border-box;
+}
+
+section {
+  margin-top: 100px;
+  padding: 0 18px;
+}
+
+/*---- Header ----*/
+header {
+  position: fixed;
+  z-index: 3;
+  top: 0;
+  right: 0;
+  left: 0;
+  min-height: 69px;
+  background-color: #ec362d;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+header h1 {
+  font-family: Roboto;
+  font-weight: bold;
+  font-size: 37px;
+  color: #ffffff;
+}
+
+/*---- Quizzes page ----*/
+.user-quizzes-list h2,
+.all-quizzes-list h2 {
+  font-family: Roboto;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 23px;
+}
+
+.all-quizzes-list h2 {
+  margin-bottom: 14px;
+}
+
+.user-quizzes-list {
+  margin-bottom: 38px;
+}
+
+.user-quizzes-list ul,
+.all-quizzes-list ul {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.user-quizzes-list__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 13px;
+}
+
+.user-quizzes-list__header ion-icon {
+  color: #ec362d;
+  width: 31px;
+  height: 31px;
+}
+
+.user-quizzes-list__empty-list {
+  border: 1px dashed #d5d5d5;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  aspect-ratio: 340 / 181;
+  padding: 0 50px;
+}
+
+.user-quizzes-list__empty-list p {
+  font-family: Roboto;
+  font-size: 20px;
+  line-height: 23px;
+  text-align: center;
+  color: #b9b9b9;
+  font-style: normal;
+  font-weight: normal;
+}
+
+.user-quizzes-list__empty-list button {
+  border: 1px dashed #ec362d;
+  background: none;
+  color: #ec362d;
+  border-radius: 20px;
+  font-family: Roboto;
+  font-size: 21px;
+  line-height: 25px;
+  padding: 5px 10px;
+}
+
+.quiz-preview {
+  border-radius: 5px;
+  width: 100%;
+  aspect-ratio: 340 / 181;
+  position: relative;
+}
+
+.quiz-preview img {
+  border-radius: 5px;
+  width: 100%;
+  aspect-ratio: 340 / 181;
+  object-fit: cover;
+}
+
+.quiz-preview__linear-gradient {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(0, 0, 0, 0.5) 64.58%,
+    #000000 100%
+  );
+  /* background: linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(0, 0, 0, 1)); */
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  padding: 0 18px 10px 18px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.quiz-preview p {
+  font-family: Roboto;
+  font-size: 19px;
+  line-height: 22px;
+  color: #ffffff;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/*---- Answer quiz page ----*/
+
+/*---- Hidden ----*/
+.hidden {
+  display: none;
+}
