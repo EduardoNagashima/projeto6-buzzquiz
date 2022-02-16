@@ -12,6 +12,7 @@ function getQuizzes() {
 function renderQuizzesPreview(response) {
   const quizzesUL = document.querySelector(".all-quizzes-list ul");
   quizzes = response.data;
+  console.log(quizzes);
   quizzes.forEach((element) => {
     quizzesUL.innerHTML += `
     <li class="quiz-preview" onclick="answerQuiz(${element.id})">
