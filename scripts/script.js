@@ -78,13 +78,13 @@ function selectAnswer(playerAnswer) {
       el.classList.add("changeOpacity");
     }
   });
-  setTimeout(nextQuestion, 2000);
+  //setTimeout(nextQuestion, 2000);
 }
 
-function nextQuestion() {
+/*function nextQuestion() {
   let tittleArray = document.querySelectorAll(".answer-quizz__question-tittle");
   tittleArray[1].scrollIntoView();
-}
+}*/
 
 function screenFocus(sectionToFocus) {
   const sections = document.querySelectorAll("section");
@@ -100,7 +100,7 @@ function createQuizStep1() {
   newQuizNumberOfQuestions = document.querySelector("#quiz-questions").value;
   newQuizNumberOfLevels = document.querySelector("#quiz-levels").value;
 
-  if (newQuizTitle.lenght < 20 || newQuizTitle.lenght > 65) {
+  if (newQuizTitle.length < 20 || newQuizTitle.length > 65) {
     alert("Erro no título");
     return;
   }
@@ -123,7 +123,97 @@ function createQuizStep1() {
     .classList.remove("hidden");
 }
 
-function createQuizStep2() {}
+function createQuizStep2() {
+  for (let i = 0; i < newQuizNumberOfQuestions; i++) {
+    let testQuestion = document.querySelector(`#question${i + 1}`).value;
+    if (testQuestion.length < 20) {
+      alert("Erro no título da pergunta");
+      return;
+    }
+    let testQuestionColor = document.querySelector(
+      `#question${i + 1}-color`
+    ).value;
+    if (!isValidHexColor(testQuestionColor)) {
+      alert("Erro na cor da pergunta");
+      return;
+    }
+    let testCorrectAnswer = document.querySelector(
+      `#question${i + 1}-correct-answer`
+    ).value;
+    if (testCorrectAnswer.length === "") {
+      alert("Erro na respota correta");
+      return;
+    }
+    let testCorrectAnswerImage = document.querySelector(
+      `#question${i + 1}-correct-answer-image-URL`
+    ).value;
+    if (!isValidUrl(testCorrectAnswerImage)) {
+      alert("Erro na imagem da resposta correta");
+      return;
+    }
+    let j = 1;
+    do {
+      let testIncorrectAnswer = document.querySelector(
+        `question${i + 1}-incorrect-answer${j}`
+      ).value;
+      if (testIncorrectAnswer === "") {
+        alert("Erro na resposta incorreta");
+        return;
+      }
+      let testIncorrectAnswerImage = document.querySelector(
+        `question${i + 1}-incorrect-answer${j}-image-URL`
+      ).value;
+      if (!isValidUrl(testIncorrectAnswerImage)) {
+        alert("Erro na imagem da resposta incorreta");
+        return;
+      }
+      j++;
+      break;
+    } while (true);
+  }
+  for (let i = 0; i < newQuizNumberOfQuestions; i++) {
+    let newQuestionTitle = document.querySelector(`#question${i + 1}`).value;
+    let newQuestionColor = document.querySelector(
+      `#question${i + 1}-color`
+    ).value;
+    let newCorrectAnswer = document.querySelector(
+      `#question${i + 1}-correct-answer`
+    ).value;
+    let newCorrectAnswerImage = document.querySelector(
+      `#question${i + 1}-correct-answer-image-URL`
+    ).value;
+    let newQuestionAnswers = [];
+    newQuestionAnswers.push({
+      text: newCorrectAnswer,
+      image: newCorrectAnswerImage,
+      isCorrectAnswer: true,
+    });
+    let j = 1;
+    do {
+      let newIncorrectAnswer = document.querySelector(
+        `question${i + 1}-incorrect-answer${j}`
+      ).value;
+      let newIncorrectAnswerImage = document.querySelector(
+        `question${i + 1}-incorrect-answer${j}-image-URL`
+      ).value;
+      newQuestionAnswers.push({
+        text: newIncorrectAnswer,
+        image: newIncorrectAnswerImage,
+        isCorrectAnswer: false,
+      });
+      j++;
+    } while (
+      document.querySelector(`question${i + 1}-incorrect-answer${j}`).value !=
+      ""
+    );
+    let newQuestion = {
+      title: newQuestionTitle,
+      color: newQuestionColor,
+      answers: newQuestionAnswers,
+    };
+    newQuizQuestions.push(newQuestion);
+  }
+}
 
 function createQuizFinalStep() {}
 
@@ -137,24 +227,54 @@ function isUrlAnImage(url) {
   return url.match(/\.(jpeg|jpg|gif|png)$/) != null;
 }
 
+function isValidHexColor(str) {
+  if (str[0] !== "#") {
+    return false;
+  }
+  if (str.length !== 7) {
+    return false;
+  }
+  var a = parseInt(str.slice(1), 16);
+  return a.toString(16) === str.slice(1).toLowerCase();
+}
+
 function renderNewQuizQuestionsInputs() {
   const div = document.querySelector(".quiz-creation__questions");
   div.innerHTML = `<h2>Crie suas perguntas</h2>`;
-  for (let i = 1; i < newQuizNumberOfQuestions + 1; i++) {
+  console.log(newQuizNumberOfQuestions);
+  for (let i = 0; i < newQuizNumberOfQuestions; i++) {
     div.innerHTML += `<form action="">
-    <h2>Pergunta ${i}</h2>
-    <input type="text" id="question${i}" placeholder="Texto da pergunta">
-    <input type="text" id="question${i}-color" placeholder="Cor de fundo da pergunta" class="quiz-creation__questions--large-margin-bottom">
+    <h2>Pergunta ${i + 1}</h2>
+    <input type="text" id="question${i + 1}" placeholder="Texto da pergunta">
+    <input type="text" id="question${
+      i + 1
+    }-color" placeholder="Cor de fundo da pergunta" class="quiz-creation__questions--large-margin-bottom">
     <h2>Resposta correta</h2>
-    <input type="text" id="question${i}-correct-answer" placeholder="Resposta correta">
-    <input type="text" id="question${i}-correct-answer-image-URL" placeholder="URL da imagem" class="quiz-creation__questions--large-margin-bottom">
+    <input type="text" id="question${
+      i + 1
+    }-correct-answer" placeholder="Resposta correta">
+    <input type="text" id="question${
+      i + 1
+    }-correct-answer-image-URL" placeholder="URL da imagem" class="quiz-creation__questions--large-margin-bottom">
     <h2>Respostas incorretas</h2>
-    <input type="text" id="question${i}-incorrect-answer1" placeholder="Resposta incorreta 1">
-    <input type="text" id="question${i}-incorrect-answer1-image-URL" placeholder="URL da imagem 1" class="quiz-creation__questions--large-margin-bottom">
-    <input type="text" id="question${i}-incorrect-answer2" placeholder="Resposta incorreta 2">
-    <input type="text" id="question${i}-incorrect-answer2-image-URL" placeholder="URL da imagem 2" class="quiz-creation__questions--large-margin-bottom">
-    <input type="text" id="question${i}-incorrect-answer3" placeholder="Resposta incorreta 3">
-    <input type="text" id="question${i}-incorrect-answer3-image-URL" placeholder="URL da imagem 3">
+    <input type="text" id="question${
+      i + 1
+    }-incorrect-answer1" placeholder="Resposta incorreta 1">
+    <input type="text" id="question${
+      i + 1
+    }-incorrect-answer1-image-URL" placeholder="URL da imagem 1" class="quiz-creation__questions--large-margin-bottom">
+    <input type="text" id="question${
+      i + 1
+    }-incorrect-answer2" placeholder="Resposta incorreta 2">
+    <input type="text" id="question${
+      i + 1
+    }-incorrect-answer2-image-URL" placeholder="URL da imagem 2" class="quiz-creation__questions--large-margin-bottom">
+    <input type="text" id="question${
+      i + 1
+    }-incorrect-answer3" placeholder="Resposta incorreta 3">
+    <input type="text" id="question${
+      i + 1
+    }-incorrect-answer3-image-URL" placeholder="URL da imagem 3">
   </form>`;
   }
 }
