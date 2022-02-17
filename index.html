@@ -18,7 +18,7 @@
     <header>
       <h1>BuzzQuizz</h1>
     </header>
-    <section class="quiz-list">
+    <section class="quiz-list hidden">
       <div class="user-quizzes-list">
         <div class="user-quizzes-list__empty-list">
           <p>Você não criou nenhum quizz ainda :(</p>
@@ -45,15 +45,76 @@
       </div>
     </section>
 
-    <section class="answer-quiz"">
+    <section class="answer-quiz hidden"">
     <!-- TEU CÓDIGO AQUI -->
     </section>
 
     <section class="quiz-creation">
-      <section></section>
-      <section></section>
-      <section></section>
-      <section></section>
+      <div class="quiz-creation__basic-info hidden">
+        <h2>Comece pelo começo</h2>
+        <form>
+          <input type="text" placeholder="Título do seu quizz">
+          <input type="text" placeholder="URL da imagem do seu quizz">
+          <input type="text" placeholder="Quantidade de peruntas do quizz">
+          <input type="text" placeholder="Quantidade de níveis do quizz">
+        </form>
+        <button>Prosseguir para criar perguntas</button>
+      </div>
+      <div class="quiz-creation__questions hidden">
+        <h2>Crie suas perguntas</h2>
+        <form action="">
+          <h2>Pergunta 1</h2>
+          <input type="text" placeholder="Texto da pergunta">
+          <input type="text" placeholder="Cor de fundo da pergunta" class="quiz-creation__questions--large-margin-bottom">
+          <h2>Resposta correta</h2>
+          <input type="text" placeholder="Resposta correta">
+          <input type="text" placeholder="URL da imagem" class="quiz-creation__questions--large-margin-bottom">
+          <h2>Respostas incorretas</h2>
+          <input type="text" placeholder="Resposta incorreta 1">
+          <input type="text" placeholder="URL da imagem 1" class="quiz-creation__questions--large-margin-bottom">
+          <input type="text" placeholder="Resposta incorreta 2">
+          <input type="text" placeholder="URL da imagem 2" class="quiz-creation__questions--large-margin-bottom">
+          <input type="text" placeholder="Resposta incorreta 3">
+          <input type="text" placeholder="URL da imagem 3">
+        </form>
+        <form action="">
+          <h2>Pergunta 2</h2>
+        </form>
+        <form action="">
+          <h2>Pergunta 3</h2>
+        </form>
+        <button>Prosseguir para criar níveis</button>
+      </div>
+      <div class="quiz-creation__levels hidden">
+        <h2>Agora, decida os níveis</h2>
+        <form action="">
+          <h2>Nível 1</h2>
+          <input type="text" placeholder="Título do nível">
+          <input type="text" placeholder="% de acerto mínima">
+          <input type="text" placeholder="URL da imagem do nível">
+          <textarea placeholder="Descrição do nível"></textarea>
+        </form>
+        <form action="">
+          <h2>Nível 2</h2>
+        </form>
+        <form action="">
+          <h2>Nível 3</h2>
+        </form>
+        <button>Finalizar Quizz</button>
+      </div>
+      <div class="quiz-creation__success">
+        <h2>Seu quizz está pronto</h2>
+        <div class="quiz-preview">
+          <img src="images/simpsons.webp" alt="" />
+          <div class="quiz-preview__linear-gradient">
+            <p>
+              Acerte os personagens corretos dos Simpsons e prove seu amor!
+            </p>
+          </div>
+        </div>
+        <button>Acessar Quizz</button>
+        <button>Voltar pra home</button>
+      </div>
     </section>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script

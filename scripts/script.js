@@ -15,7 +15,7 @@ function renderQuizzesPreview(response) {
   console.log(quizzes);
   quizzes.forEach((element) => {
     quizzesUL.innerHTML += `
-    <li class="quiz-preview" onclick="answerQuiz(${element.id})">
+    <li class="quiz-preview" onclick="answerQuiz(${element})">
             <img src=${element.image}/>
             <div class="quiz-preview__linear-gradient">
               <p>${element.title}
@@ -27,7 +27,7 @@ function renderQuizzesPreview(response) {
 
 function answerQuiz(quiz) {
   //teu cógigo aqui
-  console.log("A ID da quiz é: " + quiz);
+  console.log("A ID da quiz é: " + quiz.id);
 }
 
-getQuizzes();
+//getQuizzes();
