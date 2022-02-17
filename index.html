@@ -50,32 +50,32 @@
     </section>
 
     <section class="quiz-creation">
-      <div class="quiz-creation__basic-info hidden">
+      <div class="quiz-creation__basic-info">
         <h2>Comece pelo começo</h2>
         <form>
-          <input type="text" placeholder="Título do seu quizz">
-          <input type="text" placeholder="URL da imagem do seu quizz">
-          <input type="text" placeholder="Quantidade de peruntas do quizz">
-          <input type="text" placeholder="Quantidade de níveis do quizz">
+          <input type="text" id="quiz-title" placeholder="Título do seu quizz">
+          <input type="text" id="quiz-URL" placeholder="URL da imagem do seu quizz">
+          <input type="text" id="quiz-questions" placeholder="Quantidade de perguntas do quizz">
+          <input type="text" id="quiz-levels" placeholder="Quantidade de níveis do quizz">
         </form>
-        <button>Prosseguir para criar perguntas</button>
+        <button onclick="createQuizStep1()">Prosseguir para criar perguntas</button>
       </div>
       <div class="quiz-creation__questions hidden">
         <h2>Crie suas perguntas</h2>
         <form action="">
           <h2>Pergunta 1</h2>
-          <input type="text" placeholder="Texto da pergunta">
-          <input type="text" placeholder="Cor de fundo da pergunta" class="quiz-creation__questions--large-margin-bottom">
+          <input type="text" id="question1" placeholder="Texto da pergunta">
+          <input type="text" id="question1-color" placeholder="Cor de fundo da pergunta" class="quiz-creation__questions--large-margin-bottom">
           <h2>Resposta correta</h2>
-          <input type="text" placeholder="Resposta correta">
-          <input type="text" placeholder="URL da imagem" class="quiz-creation__questions--large-margin-bottom">
+          <input type="text" id="question1-correct-answer" placeholder="Resposta correta">
+          <input type="text" id="question1-correct-answer-image-URL" placeholder="URL da imagem" class="quiz-creation__questions--large-margin-bottom">
           <h2>Respostas incorretas</h2>
-          <input type="text" placeholder="Resposta incorreta 1">
-          <input type="text" placeholder="URL da imagem 1" class="quiz-creation__questions--large-margin-bottom">
-          <input type="text" placeholder="Resposta incorreta 2">
-          <input type="text" placeholder="URL da imagem 2" class="quiz-creation__questions--large-margin-bottom">
-          <input type="text" placeholder="Resposta incorreta 3">
-          <input type="text" placeholder="URL da imagem 3">
+          <input type="text" id="question1-incorrect-answer1" placeholder="Resposta incorreta 1">
+          <input type="text" id="question1-incorrect-answer1-image-URL" placeholder="URL da imagem 1" class="quiz-creation__questions--large-margin-bottom">
+          <input type="text" id="question1-incorrect-answer2" placeholder="Resposta incorreta 2">
+          <input type="text" id="question1-incorrect-answer2-image-URL" placeholder="URL da imagem 2" class="quiz-creation__questions--large-margin-bottom">
+          <input type="text" id="question1-incorrect-answer3" placeholder="Resposta incorreta 3">
+          <input type="text" id="question1-incorrect-answer3-image-URL" placeholder="URL da imagem 3">
         </form>
         <form action="">
           <h2>Pergunta 2</h2>
@@ -83,16 +83,16 @@
         <form action="">
           <h2>Pergunta 3</h2>
         </form>
-        <button>Prosseguir para criar níveis</button>
+        <button onclick="createQuizStep2()">Prosseguir para criar níveis</button>
       </div>
       <div class="quiz-creation__levels hidden">
         <h2>Agora, decida os níveis</h2>
         <form action="">
           <h2>Nível 1</h2>
-          <input type="text" placeholder="Título do nível">
-          <input type="text" placeholder="% de acerto mínima">
-          <input type="text" placeholder="URL da imagem do nível">
-          <textarea placeholder="Descrição do nível"></textarea>
+          <input type="text" id="level1-title" placeholder="Título do nível">
+          <input type="text" id="level1-min-percent" placeholder="% de acerto mínima">
+          <input type="text" id="level1-image-URL" placeholder="URL da imagem do nível">
+          <textarea id="level1-description" placeholder="Descrição do nível"></textarea>
         </form>
         <form action="">
           <h2>Nível 2</h2>
@@ -100,9 +100,9 @@
         <form action="">
           <h2>Nível 3</h2>
         </form>
-        <button>Finalizar Quizz</button>
+        <button onclick="createQuizFinalStep()">Finalizar Quizz</button>
       </div>
-      <div class="quiz-creation__success">
+      <div class="quiz-creation__success hidden">
         <h2>Seu quizz está pronto</h2>
         <div class="quiz-preview">
           <img src="images/simpsons.webp" alt="" />
