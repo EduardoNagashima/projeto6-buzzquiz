@@ -291,23 +291,24 @@ function createQuizStep2() {
     let nextIncorrectAnswer;
     do {
       let testIncorrectAnswer = document.querySelector(
-        `question${i + 1}-incorrect-answer${j}`
+        `#question${i + 1}-incorrect-answer${j}`
       ).value;
       if (testIncorrectAnswer === "") {
         alert("Erro na resposta incorreta");
         return;
       }
       let testIncorrectAnswerImage = document.querySelector(
-        `question${i + 1}-incorrect-answer${j}-image-URL`
+        `#question${i + 1}-incorrect-answer${j}-image-URL`
       ).value;
       if (!isValidUrl(testIncorrectAnswerImage)) {
         alert("Erro na imagem da resposta incorreta");
         return;
       }
       j++;
+      if (j === newQuizNumberOfQuestions) break;
       nextIncorrectAnswer = document.querySelector(
-        `question${i + 1}-incorrect-answer${j}`
-      );
+        `#question${i + 1}-incorrect-answer${j}`
+      ).value;
     } while (nextIncorrectAnswer);
   }
   for (let i = 0; i < newQuizNumberOfQuestions; i++) {
@@ -330,10 +331,10 @@ function createQuizStep2() {
     let j = 1;
     do {
       let newIncorrectAnswer = document.querySelector(
-        `question${i + 1}-incorrect-answer${j}`
+        `#question${i + 1}-incorrect-answer${j}`
       ).value;
       let newIncorrectAnswerImage = document.querySelector(
-        `question${i + 1}-incorrect-answer${j}-image-URL`
+        `#question${i + 1}-incorrect-answer${j}-image-URL`
       ).value;
       newQuestionAnswers.push({
         text: newIncorrectAnswer,
@@ -342,7 +343,7 @@ function createQuizStep2() {
       });
       j++;
     } while (
-      document.querySelector(`question${i + 1}-incorrect-answer${j}`).value !=
+      document.querySelector(`#question${i + 1}-incorrect-answer${j}`).value !=
       ""
     );
     let newQuestion = {
@@ -352,6 +353,7 @@ function createQuizStep2() {
     };
     newQuizQuestions.push(newQuestion);
   }
+  console.log(newQuizQuestions);
 }
 
 function createQuizFinalStep() {}
@@ -380,7 +382,6 @@ function isValidHexColor(str) {
 function renderNewQuizQuestionsInputs() {
   const div = document.querySelector(".quiz-creation__questions");
   div.innerHTML = `<h2>Crie suas perguntas</h2>`;
-  console.log(newQuizNumberOfQuestions);
   for (let i = 0; i < newQuizNumberOfQuestions; i++) {
     div.innerHTML += `<form action="">
     <h2>Pergunta ${i + 1}</h2>
@@ -416,6 +417,10 @@ function renderNewQuizQuestionsInputs() {
     }-incorrect-answer3-image-URL" placeholder="URL da imagem 3">
   </form>`;
   }
+  div.innerHTML += `<button onclick="createQuizStep2()">
+    Prosseguir para criar níveis
+  </button>`;
+  console.log(document.querySelectorAll(".quiz-creation input"));
 }
 
 getQuizzes();

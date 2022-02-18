@@ -4,7 +4,7 @@
 }
 
 :root {
---text-color: red;
+  --text-color: red;
 }
 
 body {
@@ -196,7 +196,7 @@ section.answer-quizz div.questions--6 {
   background-color: #ffffff;
   width: 100%;
   max-width: 759px;
-  margin: 0 auto; 
+  margin: 0 auto;
   padding: 15px;
   margin-bottom: 30px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
@@ -241,7 +241,7 @@ section.answer-quizz div.questions--6 {
   flex-wrap: wrap;
   /* Se quiser deixar a terceira opção no meio é só mudar essa propriedade para center */
   justify-content: space-between;
-  gap:1px
+  gap: 1px;
 }
 
 .answers {
@@ -271,10 +271,10 @@ section.answer-quizz div.questions--6 {
 
 .quizz-result {
   padding: 15px;
-  width: 100%; 
+  width: 100%;
   max-width: 759px;
   margin: 0 auto 57px auto;
-  background-color: #fff; 
+  background-color: #fff;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
 }
 
@@ -282,13 +282,13 @@ div.quizz-result__header {
   width: 100%;
   height: 99px;
   margin: 0 auto;
-  background: #EC362D;
+  background: #ec362d;
   margin-bottom: 10px;
   display: flex;
   align-items: center;
 }
 
-.quizz-result__header h4{
+.quizz-result__header h4 {
   font-weight: 700;
   font-size: 23px;
   color: #fff;
@@ -296,7 +296,6 @@ div.quizz-result__header {
   text-align: center;
   word-break: break-word;
 }
-
 
 .quizz-result__level {
   display: flex;
@@ -315,9 +314,9 @@ div.quizz-result__header {
   word-break: break-word;
 }
 
-div.answer-quizz__buttons{
+div.answer-quizz__buttons {
   width: 100%;
-  margin: 0 auto; 
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -327,21 +326,21 @@ div.answer-quizz__buttons{
 button.answer-quizz__play-again-button {
   width: 261px;
   height: 52px;
-  background-color: #EC362D;
+  background-color: #ec362d;
   border-radius: 15px;
   border: none;
-  color: #FFF5F4;
+  color: #fff5f4;
   font-size: 21px;
   font-weight: 400;
   margin-bottom: 16px;
 }
 
-.answer-quizz__home-button{
+.answer-quizz__home-button {
   border: none;
   font-size: 21px;
   font-weight: 400;
   color: #818181;
-  background-color: #FAFAFA;
+  background-color: #fafafa;
   margin-bottom: 30px;
 }
 
@@ -351,6 +350,7 @@ button.answer-quizz__play-again-button {
   width: 100vw;
   max-width: 600px;
   margin: 100px auto 0 auto;
+  padding-bottom: 20px;
 }
 
 .quiz-creation > div > h2 {
@@ -479,20 +479,18 @@ button.answer-quizz__play-again-button {
   margin: 0 auto 30px auto;
   border: 16px solid #f3f3f3;
   border-radius: 50%;
-  border-top: 16px solid #EC362D;
+  border-top: 16px solid #ec362d;
   width: 120px;
   height: 120px;
   -webkit-animation: spin 2s linear infinite; /* Safari */
   animation: spin 2s linear infinite;
 }
 
-.loader-div span{
+.loader-div span {
   font-weight: 700;
   font-size: 25px;
-  color: #EC362D;
+  color: #ec362d;
 }
-
-
 
 .hidden {
   display: none;
@@ -502,35 +500,42 @@ button.answer-quizz__play-again-button {
   opacity: 0.3;
 }
 
-.wrongAnswer span{
-  color:#FF4B4B;
+.wrongAnswer span {
+  color: #ff4b4b;
 }
 
-.correctColor span{
-  color: #009C22;
+.correctColor span {
+  color: #009c22;
 }
 
 @-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-@media(max-width:759px){
-
+@media (max-width: 759px) {
   .answers {
     /* ou auto, gostaria que a imagem mantesse a mesma  */
   }
 
-  .answers span{
+  .answers span {
     font-size: 13px;
   }
 
-  .answers img{
+  .answers img {
     aspect-ratio: 10 / 7;
   }
 
@@ -540,7 +545,7 @@ button.answer-quizz__play-again-button {
   .answer-quizz__question-tittle--4 h4,
   .answer-quizz__question-tittle--5 h4,
   .answer-quizz__question-tittle--6 h4 {
-  font-size: 19px;
+    font-size: 19px;
   }
 
   .answer-quizz__question-tittle--1,
@@ -553,7 +558,7 @@ button.answer-quizz__play-again-button {
   }
 
   .answer-quizz__header h3 {
-  font-size: 19px;
+    font-size: 19px;
   }
 
   .quizz-result {
@@ -570,13 +575,13 @@ button.answer-quizz__play-again-button {
     object-fit: cover;
   }
 
-  .quizz-result__header{
+  .quizz-result__header {
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
-  .quizz-result__header h4{
+  .quizz-result__header h4 {
     font-size: 19px;
     margin: 0 10px;
   }
@@ -584,8 +589,8 @@ button.answer-quizz__play-again-button {
   .quizz-result__level span {
     margin: 10px 0 10px 0;
   }
- 
-  button.answer-quizz__play-again-button{
+
+  button.answer-quizz__play-again-button {
     width: 220px;
     height: 44px;
     font-size: 18px;
@@ -594,5 +599,4 @@ button.answer-quizz__play-again-button {
   .answer-quizz__home-button {
     font-size: 18px;
   }
-
 }
