@@ -92,17 +92,19 @@ function selectAnswer(playerAnswer) {
   let answersSection = playerAnswer.parentNode;
   const answers = answersSection.querySelectorAll(".answers");
   answers.forEach((el) => {
-    el.onclick = "";
+    el.style.pointerEvents = 'none';
     if (el !== playerAnswer) {
       el.classList.add("changeOpacity");
     }
-  if (playerAnswer.classList.contains('.correct-answer')){
+    const correctAnswer = answersSection.querySelector('.correct-answer');
+    answersSection.querySelectorAll('.answers').forEach((wrongAnswer)=> wrongAnswer.classList.add('wrongAnswer'))
+    correctAnswer.classList.add('correctColor');
+  });
+
+  if (playerAnswer.classList.contains('correct-answer')){
     correctsCount += 1;
   }
-  const correctAnswer = answersSection.querySelector('.correct-answer');
-  answersSection.querySelectorAll('.answers').forEach((wrongAnswer)=> wrongAnswer.classList.add('wrongAnswer'))
-  correctAnswer.classList.add('correctColor');
-});
+
   setTimeout(nextQuestion, 2000);
   countPlayerAnswer++;
   setTimeout(isFinish, 2000);
@@ -122,36 +124,50 @@ function isFinish(){
       quizzOn = false;
       //focar ma tela final de resposta
       //ver o porque de estar bugando na ordem que é respondida
-      //se clicar várias vezes ele buga
       const promisse = axios.get(`${QUIZ_API_URL}` + quizzSelectedID);
+      const section = document.querySelector('.answer-quizz');
       promisse.then((response) => {
       let quizzLevel = response.data.levels;
-      const section = document.querySelector('.answer-quizz');
-      quizzLevel.forEach((lv) =>{
-        section.innerHTML += `
-        <div class="quizz-result">
-          <div class="quizz-result__header">
-            <h4>${lv.title}</h4>
-          </div>
-          <div class="quizz-result__level">
-            <img src="${lv.image}" alt="quizz-result-img">
-            <span>${lv.text}</span>
-          </div>
+        //fazer a lógica por trás para aparecer o level que a pessoa está e passar o level como parametro
+        //para ver que nível que a pessoa é do quizz
+        let playerLv = playerLevel();
+        let lvArray = []
+        quizzLevel.forEach((a)=> lvArray.push(a.minValue));
+        let closest = lvArray.reduce(function(prev, curr) {
+          return (Math.abs(curr - playerLv) < Math.abs(prev - playerLv) ? curr : prev);
+        });
+        quizzLevel.forEach((el)=>{
+          if(el.minValue === closest){
+            section.innerHTML += `
+            <div class="quizz-result">
+              <div class="quizz-result__header">
+                <h4>${playerLv}% ${el.title}</h4>
+              </div>
+              <div class="quizz-result__level">
+                <img src="${el.image}" alt="quizz-result-img">
+                <span>${el.text}</span>
+              </div>
+            </div>`
+          }
+        });
+        section.innerHTML+= `
+        <div class="answer-quizz__buttons">
+          <button class="answer-quizz__play-again-button" onclick="playagain()">
+            Reiniciar Quizz
+          </button>
+          <button class="answer-quizz__home-button" onclick="screenFocus('.quiz-list')">
+            Voltar para home
+          </button>
         </div>`
       });
-      section.innerHTML+= `
-      <div class="answer-quizz__buttons">
-        <button class="answer-quizz__play-again-button" onclick="playagain()">
-          Reiniciar Quizz
-        </button>
-        <button class="answer-quizz__home-button" onclick="screenFocus('.quiz-list')">
-          Voltar para home
-        </button>
-      </div>`
-    });
-    
-    }
+    } 
   }
+}
+
+function playerLevel(){
+  let playerLvl = (correctsCount / totalQuestions) * 100;
+  playerLvl = Math.round(playerLvl);
+  return playerLvl;
 }
 
 function playagain(){
