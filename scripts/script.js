@@ -37,6 +37,7 @@ function renderQuizzesPreview(response) {
 }
 
 function answerQuiz(quizId) {
+  loadScreen(true);
   quizzSelectedID = quizId;
   screenFocus(".answer-quizz");
   const promisse = axios.get(`${QUIZ_API_URL}` + quizId);
@@ -85,6 +86,7 @@ function printSelectedAnswer(quizz) {
     });
     cont++;
   });
+  loadScreen(false);
 }
 
 function selectAnswer(playerAnswer) {
@@ -161,11 +163,20 @@ function isFinish(){
       });
       setTimeout(()=>{
         let result = document.querySelector('.quizz-result');
-        console.log(result);
         result.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
       }, 500);
     } 
     
+  }
+}
+
+function loadScreen(condition){
+  // passar true ou false
+  const loadScreen = document.querySelector('.loader-div');
+  if(condition){
+    loadScreen.classList.remove('hidden');
+  } else {
+    loadScreen.classList.add('hidden');
   }
 }
 
@@ -177,6 +188,7 @@ function homePage(){
   countPlayerAnswer = 0;
   document.querySelector('.answer-quizz').innerHTML = '';
   screenFocus('.quiz-list');
+  document.querySelector('.user-quizzes-list').scrollIntoView();
 }
 
 function playerLevel(){
@@ -192,7 +204,7 @@ function playagain(){
   totalQuestions = 0;
   countPlayerAnswer = 0;
   document.querySelector('.answer-quizz').innerHTML = '';
-  setTimeout(()=>{answerQuiz(quizzSelectedID)},2000);
+  answerQuiz(quizzSelectedID);
 }
 
 function screenFocus(sectionToFocus) {

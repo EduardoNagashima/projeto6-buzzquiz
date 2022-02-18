@@ -213,9 +213,9 @@ section.answer-quizz div.questions--6 {
   align-items: center;
   justify-content: center;
   max-width: 759px;
-  width: 100%;
-  height: 89px;
   margin-bottom: 10px;
+  width: 100%;
+  height: 138px;
 }
 
 .answer-quizz__question-tittle--1 h4,
@@ -462,6 +462,40 @@ button.answer-quizz__play-again-button {
 }
 
 /*---- Utility ----*/
+
+.loader-div {
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.loader {
+  margin: 0 auto 30px auto;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #EC362D;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+.loader-div span{
+  font-weight: 700;
+  font-size: 25px;
+  color: #EC362D;
+}
+
+
+
 .hidden {
   display: none;
 }
@@ -478,11 +512,21 @@ button.answer-quizz__play-again-button {
   color: #009C22;
 }
 
-/* Queria outro jeito de colocar isso nativamente sem precisar usar o @media, se tiver alguma ideia, sou todo ouvidos */
-@media(max-width:426px){
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media(max-width:759px){
+
   .answers {
-    height: 140px;
-    margin-bottom: 15px;
+    /* ou auto, gostaria que a imagem mantesse a mesma  */
+    height: auto;
   }
 
   .answers span{
@@ -496,6 +540,15 @@ button.answer-quizz__play-again-button {
   .answer-quizz__question-tittle--5 h4,
   .answer-quizz__question-tittle--6 h4 {
   font-size: 19px;
+  }
+
+  .answer-quizz__question-tittle--1,
+  .answer-quizz__question-tittle--2,
+  .answer-quizz__question-tittle--3,
+  .answer-quizz__question-tittle--4,
+  .answer-quizz__question-tittle--5,
+  .answer-quizz__question-tittle--6 {
+    height: 89px;
   }
 
   .answer-quizz__header h3 {
