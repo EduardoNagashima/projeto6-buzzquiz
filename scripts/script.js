@@ -63,7 +63,8 @@ function printSelectedAnswer(quizz) {
     questionsInnerHTML.innerHTML += `<div class="answer-quizz__answers--${cont}"></div>`;
     const questionTextColor = document.querySelector(`.answer-quizz__question-tittle--${cont}`);
     questionTextColor.style.setProperty("--text-color", `${questions.color}`);
-    questions.answers.forEach((answer) => {
+    let randomQuestions = questions.answers.sort(() => Math.random() - 0.5);
+    randomQuestions.forEach((answer) => {
       if (answer.isCorrectAnswer){
         let quizzAnswers = document.querySelector(`.answer-quizz__answers--${cont}`);
         quizzAnswers.innerHTML += `
@@ -101,9 +102,9 @@ function selectAnswer(playerAnswer) {
   answersSection.querySelectorAll('.answers').forEach((wrongAnswer)=> wrongAnswer.classList.add('wrongAnswer'))
   correctAnswer.classList.add('correctColor');
 });
-  setTimeout(nextQuestion,2000);
+  setTimeout(nextQuestion, 2000);
   countPlayerAnswer++;
-  setTimeout(isFinish,2000);
+  setTimeout(isFinish, 2000);
 }
 
 function nextQuestion() {
@@ -116,13 +117,16 @@ function nextQuestion() {
 
 function isFinish(){
   if (totalQuestions === countPlayerAnswer){
+    //focar ma tela final de resposta
+    //ver o porque de estar bugando na ordem que é respondida
+    //se clicar várias vezes ele buga
     const promisse = axios.get(`${QUIZ_API_URL}` + quizzSelectedID);
     promisse.then((response) => {
     let quizzLevel = response.data.levels;
     const section = document.querySelector('.answer-quizz');
     quizzLevel.forEach((lv) =>{
       section.innerHTML += `
-      <div class="quizz-result hidden ${}">
+      <div class="quizz-result hidden">
         <div class="quizz-result__header">
           <h4>${lv.title}</h4>
         </div>
@@ -130,27 +134,30 @@ function isFinish(){
           <img src="${lv.image}" alt="quizz-result-img">
           <span>${lv.text}</span>
         </div>
-      </div>
-
-      <div class="answer-quizz__buttons">
-      <button class="answer-quizz__play-again-button">
+      </div>`
+    });
+    section.innerHTML+= `
+    <div class="answer-quizz__buttons">
+      <button class="answer-quizz__play-again-button" onclick="playagain()">
         Reiniciar Quizz
       </button>
       <button class="answer-quizz__home-button" onclick="screenFocus('.quiz-list')">
         Voltar para home
       </button>
     </div>`
-    });
   });
+
   }
 }
 
-// function screenFocus(sectionToFocus) {
-//   console.log(sectionToFocus);
-//   const sections = document.querySelectorAll("section");
-//   sections.forEach((section) => section.classList.add("hidden"));
-//   sectionToFocus.classList.remove("hidden");
-// }
+function playagain(){
+  correctsCount = 0;
+  questionCount = 2;
+  totalQuestions = 0;
+  countPlayerAnswer = 0;
+  document.querySelector('.answer-quizz').innerHTML = '';
+  setTimeout(()=>{answerQuiz(quizzSelectedID)},2000);
+}
 
 function screenFocus(sectionToFocus) {
   let section = document.querySelector(sectionToFocus);
