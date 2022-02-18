@@ -227,7 +227,7 @@ section.answer-quizz div.questions--6 {
   font-weight: 700;
   font-size: 23px;
   color: #ffffff;
-  word-break: break-all;
+  word-break: break-word;
   text-align: center;
 }
 
@@ -266,7 +266,7 @@ section.answer-quizz div.questions--6 {
   font-size: 20px;
   font-weight: 700;
   color: #000000;
-  word-break: break-all;
+  word-break: break-word;
   align-self: flex-start;
   margin-bottom: 10px;
 }
@@ -296,7 +296,7 @@ div.quizz-result__header {
   color: #fff;
   margin: 0 auto;
   text-align: center;
-  word-break: break-all;
+  word-break: break-word;
 }
 
 
@@ -314,7 +314,7 @@ div.quizz-result__header {
   font-weight: 700;
   color: #484848;
   margin-left: 15px;
-  word-break: break-all;
+  word-break: break-word;
 }
 
 div.answer-quizz__buttons{
