@@ -247,17 +247,15 @@ section.answer-quizz div.questions--6 {
 .answers {
   width: 49%;
   max-width: 350px;
-  max-height: 220px;
   display: flex;
   flex-direction: column;
 }
 
 .answers img {
   width: 100%;
-  /* Se eu tirar o height, tem algumas imagens que bugam ficando umas mais largas que outras */
   height: 100%;
-  max-height:  180px;
-  min-height: 120px;
+  aspect-ratio: 15 / 8;
+  /* Se eu tirar o height, tem algumas imagens que bugam ficando umas mais largas que outras */
   object-fit: cover;
   margin-bottom: 8px;
 }
@@ -526,11 +524,14 @@ button.answer-quizz__play-again-button {
 
   .answers {
     /* ou auto, gostaria que a imagem mantesse a mesma  */
-    height: auto;
   }
 
   .answers span{
     font-size: 13px;
+  }
+
+  .answers img{
+    aspect-ratio: 10 / 7;
   }
 
   .answer-quizz__question-tittle--1 h4,
