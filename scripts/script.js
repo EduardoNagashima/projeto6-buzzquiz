@@ -5,6 +5,7 @@ let questionCount = 2;
 let quizzSelectedID;
 let totalQuestions = 0;
 let countPlayerAnswer = 0;
+let quizzOn = true;
 let newQuizTitle = null;
 let newQuizImage = null;
 let newQuizQuestions = [];
@@ -116,41 +117,45 @@ function nextQuestion() {
 }
 
 function isFinish(){
-  if (totalQuestions === countPlayerAnswer){
-    //focar ma tela final de resposta
-    //ver o porque de estar bugando na ordem que é respondida
-    //se clicar várias vezes ele buga
-    const promisse = axios.get(`${QUIZ_API_URL}` + quizzSelectedID);
-    promisse.then((response) => {
-    let quizzLevel = response.data.levels;
-    const section = document.querySelector('.answer-quizz');
-    quizzLevel.forEach((lv) =>{
-      section.innerHTML += `
-      <div class="quizz-result hidden">
-        <div class="quizz-result__header">
-          <h4>${lv.title}</h4>
-        </div>
-        <div class="quizz-result__level">
-          <img src="${lv.image}" alt="quizz-result-img">
-          <span>${lv.text}</span>
-        </div>
+  if (quizzOn){
+    if (totalQuestions === countPlayerAnswer){
+      quizzOn = false;
+      //focar ma tela final de resposta
+      //ver o porque de estar bugando na ordem que é respondida
+      //se clicar várias vezes ele buga
+      const promisse = axios.get(`${QUIZ_API_URL}` + quizzSelectedID);
+      promisse.then((response) => {
+      let quizzLevel = response.data.levels;
+      const section = document.querySelector('.answer-quizz');
+      quizzLevel.forEach((lv) =>{
+        section.innerHTML += `
+        <div class="quizz-result">
+          <div class="quizz-result__header">
+            <h4>${lv.title}</h4>
+          </div>
+          <div class="quizz-result__level">
+            <img src="${lv.image}" alt="quizz-result-img">
+            <span>${lv.text}</span>
+          </div>
+        </div>`
+      });
+      section.innerHTML+= `
+      <div class="answer-quizz__buttons">
+        <button class="answer-quizz__play-again-button" onclick="playagain()">
+          Reiniciar Quizz
+        </button>
+        <button class="answer-quizz__home-button" onclick="screenFocus('.quiz-list')">
+          Voltar para home
+        </button>
       </div>`
     });
-    section.innerHTML+= `
-    <div class="answer-quizz__buttons">
-      <button class="answer-quizz__play-again-button" onclick="playagain()">
-        Reiniciar Quizz
-      </button>
-      <button class="answer-quizz__home-button" onclick="screenFocus('.quiz-list')">
-        Voltar para home
-      </button>
-    </div>`
-  });
-
+    
+    }
   }
 }
 
 function playagain(){
+  quizzOn = true;
   correctsCount = 0;
   questionCount = 2;
   totalQuestions = 0;
