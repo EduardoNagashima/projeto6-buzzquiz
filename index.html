@@ -1,134 +1,207 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BuzzQuizz</title>
+    <link rel="stylesheet" href="styles/reset.css" />
+    <link rel="stylesheet" href="styles/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BuzzQuizz</title>
-  <link rel="stylesheet" href="styles/reset.css" />
-  <link rel="stylesheet" href="styles/style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
-</head>
-
-<body>
-  <header>
-    <h1>BuzzQuizz</h1>
-  </header>
-  <section class="quiz-list">
-    <div class="user-quizzes-list">
-      <div class="user-quizzes-list__empty-list">
-        <p>Você não criou nenhum quizz ainda :(</p>
-        <button>Criar Quizz</button>
-      </div>
-      <div class="user-quizzes-list__header">
-        <h2>Seus Quizzes</h2>
-        <ion-icon name="add-circle"></ion-icon>
-      </div>
-      <ul>
-        <li class="quizz-preview">
-          <img src="images/simpsons.webp" alt="" />
-          <div class="quizz-preview__linear-gradient">
-            <p>
-              Acerte os personagens corretos dos Simpsons e prove seu amor!
-            </p>
-          </div>
-        </li>
-      </ul>
-    </div>
-    <div class="all-quizzes-list">
-      <h2>Todos os Quizzes</h2>
-      <ul></ul>
-    </div>
-  </section>
-
-  <section class="answer-quizz hidden">
-    <!-- TEU CÓDIGO AQUI -->
-  </section>
-
-  <div class="loader-div hidden">
-    <div class="loader"></div>
-    <span>Carregando</span>
-  </div>
-  <section class="quiz-creation hidden">
-    <div class="quiz-creation__basic-info">
-      <h2>Comece pelo começo</h2>
-      <form>
-        <input type="text" id="quiz-title" placeholder="Título do seu quizz" />
-        <input type="text" id="quiz-URL" placeholder="URL da imagem do seu quizz" />
-        <input type="text" id="quiz-questions" placeholder="Quantidade de perguntas do quizz" />
-        <input type="text" id="quiz-levels" placeholder="Quantidade de níveis do quizz" />
-      </form>
-      <button onclick="createQuizStep1()">
-        Prosseguir para criar perguntas
-      </button>
-    </div>
-    <div class="quiz-creation__questions hidden">
-      <h2>Crie suas perguntas</h2>
-      <form action="">
-        <h2>Pergunta 1</h2>
-        <input type="text" id="question1" placeholder="Texto da pergunta" />
-        <input type="text" id="question1-color" placeholder="Cor de fundo da pergunta"
-          class="quiz-creation__questions--large-margin-bottom" />
-        <h2>Resposta correta</h2>
-        <input type="text" id="question1-correct-answer" placeholder="Resposta correta" />
-        <input type="text" id="question1-correct-answer-image-URL" placeholder="URL da imagem"
-          class="quiz-creation__questions--large-margin-bottom" />
-        <h2>Respostas incorretas</h2>
-        <input type="text" id="question1-incorrect-answer1" placeholder="Resposta incorreta 1" />
-        <input type="text" id="question1-incorrect-answer1-image-URL" placeholder="URL da imagem 1"
-          class="quiz-creation__questions--large-margin-bottom" />
-        <input type="text" id="question1-incorrect-answer2" placeholder="Resposta incorreta 2" />
-        <input type="text" id="question1-incorrect-answer2-image-URL" placeholder="URL da imagem 2"
-          class="quiz-creation__questions--large-margin-bottom" />
-        <input type="text" id="question1-incorrect-answer3" placeholder="Resposta incorreta 3" />
-        <input type="text" id="question1-incorrect-answer3-image-URL" placeholder="URL da imagem 3" />
-      </form>
-      <form action="">
-        <h2>Pergunta 2</h2>
-      </form>
-      <form action="">
-        <h2>Pergunta 3</h2>
-      </form>
-      <button onclick="createQuizStep2()">
-        Prosseguir para criar níveis
-      </button>
-    </div>
-    <div class="quiz-creation__levels hidden">
-      <h2>Agora, decida os níveis</h2>
-      <form action="">
-        <h2>Nível 1</h2>
-        <input type="text" id="level1-title" placeholder="Título do nível" />
-        <input type="text" id="level1-min-percent" placeholder="% de acerto mínima" />
-        <input type="text" id="level1-image-URL" placeholder="URL da imagem do nível" />
-        <textarea id="level1-description" placeholder="Descrição do nível"></textarea>
-      </form>
-      <form action="">
-        <h2>Nível 2</h2>
-      </form>
-      <form action="">
-        <h2>Nível 3</h2>
-      </form>
-      <button onclick="createQuizFinalStep()">Finalizar Quizz</button>
-    </div>
-    <div class="quiz-creation__success hidden">
-      <h2>Seu quizz está pronto</h2>
-      <div class="quiz-preview">
-        <img src="images/simpsons.webp" alt="" />
-        <div class="quiz-preview__linear-gradient">
-          <p>Acerte os personagens corretos dos Simpsons e prove seu amor!</p>
+  <body>
+    <header>
+      <h1>BuzzQuizz</h1>
+    </header>
+    <section class="quiz-list">
+      <div class="user-quizzes-list">
+        <div class="user-quizzes-list__empty-list">
+          <p>Você não criou nenhum quizz ainda :(</p>
+          <button onclick="screenFocus('.quiz-creation')">Criar Quizz</button>
         </div>
+        <div class="user-quizzes-list__header">
+          <h2>Seus Quizzes</h2>
+          <ion-icon
+            name="add-circle"
+            onclick="screenFocus('.quiz-creation')"
+          ></ion-icon>
+        </div>
+        <ul>
+          <li class="quizz-preview">
+            <img src="images/simpsons.webp" alt="" />
+            <div class="quizz-preview__linear-gradient">
+              <p>
+                Acerte os personagens corretos dos Simpsons e prove seu amor!
+              </p>
+            </div>
+          </li>
+        </ul>
       </div>
-      <button>Acessar Quizz</button>
-      <button>Voltar pra home</button>
-    </div>
-  </section>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-  <script src="scripts/script.js"></script>
-</body>
+      <div class="all-quizzes-list">
+        <h2>Todos os Quizzes</h2>
+        <ul></ul>
+      </div>
+    </section>
 
+    <section class="answer-quizz hidden">
+      <!-- TEU CÓDIGO AQUI -->
+    </section>
+
+    <div class="loader-div hidden">
+      <div class="loader"></div>
+      <span>Carregando</span>
+    </div>
+    <section class="quiz-creation hidden">
+      <div class="quiz-creation__basic-info">
+        <h2>Comece pelo começo</h2>
+        <form>
+          <input
+            type="text"
+            id="quiz-title"
+            placeholder="Título do seu quizz"
+          />
+          <input
+            type="text"
+            id="quiz-URL"
+            placeholder="URL da imagem do seu quizz"
+          />
+          <input
+            type="text"
+            id="quiz-questions"
+            placeholder="Quantidade de perguntas do quizz"
+          />
+          <input
+            type="text"
+            id="quiz-levels"
+            placeholder="Quantidade de níveis do quizz"
+          />
+        </form>
+        <button onclick="createQuizStep1()">
+          Prosseguir para criar perguntas
+        </button>
+      </div>
+      <div class="quiz-creation__questions hidden">
+        <h2>Crie suas perguntas</h2>
+        <form action="">
+          <h2>Pergunta 1</h2>
+          <input type="text" id="question1" placeholder="Texto da pergunta" />
+          <input
+            type="text"
+            id="question1-color"
+            placeholder="Cor de fundo da pergunta"
+            class="quiz-creation__questions--large-margin-bottom"
+          />
+          <h2>Resposta correta</h2>
+          <input
+            type="text"
+            id="question1-correct-answer"
+            placeholder="Resposta correta"
+          />
+          <input
+            type="text"
+            id="question1-correct-answer-image-URL"
+            placeholder="URL da imagem"
+            class="quiz-creation__questions--large-margin-bottom"
+          />
+          <h2>Respostas incorretas</h2>
+          <input
+            type="text"
+            id="question1-incorrect-answer1"
+            placeholder="Resposta incorreta 1"
+          />
+          <input
+            type="text"
+            id="question1-incorrect-answer1-image-URL"
+            placeholder="URL da imagem 1"
+            class="quiz-creation__questions--large-margin-bottom"
+          />
+          <input
+            type="text"
+            id="question1-incorrect-answer2"
+            placeholder="Resposta incorreta 2"
+          />
+          <input
+            type="text"
+            id="question1-incorrect-answer2-image-URL"
+            placeholder="URL da imagem 2"
+            class="quiz-creation__questions--large-margin-bottom"
+          />
+          <input
+            type="text"
+            id="question1-incorrect-answer3"
+            placeholder="Resposta incorreta 3"
+          />
+          <input
+            type="text"
+            id="question1-incorrect-answer3-image-URL"
+            placeholder="URL da imagem 3"
+          />
+        </form>
+        <form action="">
+          <h2>Pergunta 2</h2>
+        </form>
+        <form action="">
+          <h2>Pergunta 3</h2>
+        </form>
+        <button onclick="createQuizStep2()">
+          Prosseguir para criar níveis
+        </button>
+      </div>
+      <div class="quiz-creation__levels hidden">
+        <h2>Agora, decida os níveis</h2>
+        <form action="">
+          <h2>Nível 1</h2>
+          <input type="text" id="level1-title" placeholder="Título do nível" />
+          <input
+            type="text"
+            id="level1-min-percent"
+            placeholder="% de acerto mínima"
+          />
+          <input
+            type="text"
+            id="level1-image-URL"
+            placeholder="URL da imagem do nível"
+          />
+          <textarea
+            id="level1-description"
+            placeholder="Descrição do nível"
+          ></textarea>
+        </form>
+        <form action="">
+          <h2>Nível 2</h2>
+        </form>
+        <form action="">
+          <h2>Nível 3</h2>
+        </form>
+        <button onclick="createQuizFinalStep()">Finalizar Quizz</button>
+      </div>
+      <div class="quiz-creation__success hidden">
+        <h2>Seu quizz está pronto</h2>
+        <div class="quiz-preview">
+          <img src="images/simpsons.webp" alt="" />
+          <div class="quiz-preview__linear-gradient">
+            <p>Acerte os personagens corretos dos Simpsons e prove seu amor!</p>
+          </div>
+        </div>
+        <button>Acessar Quizz</button>
+        <button>Voltar pra home</button>
+      </div>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
+    <script src="scripts/script.js"></script>
+  </body>
 </html>

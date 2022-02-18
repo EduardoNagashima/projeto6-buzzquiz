@@ -62,20 +62,26 @@ function printSelectedAnswer(quizz) {
         <h4>${questions.title}</h4>
       </div>`;
     questionsInnerHTML.innerHTML += `<div class="answer-quizz__answers--${cont}"></div>`;
-    const questionTextColor = document.querySelector(`.answer-quizz__question-tittle--${cont}`);
+    const questionTextColor = document.querySelector(
+      `.answer-quizz__question-tittle--${cont}`
+    );
     questionTextColor.style.setProperty("--text-color", `${questions.color}`);
     let randomQuestions = questions.answers.sort(() => Math.random() - 0.5);
     randomQuestions.forEach((answer) => {
-      if (answer.isCorrectAnswer){
-        let quizzAnswers = document.querySelector(`.answer-quizz__answers--${cont}`);
+      if (answer.isCorrectAnswer) {
+        let quizzAnswers = document.querySelector(
+          `.answer-quizz__answers--${cont}`
+        );
         quizzAnswers.innerHTML += `
         <div class="answers correct-answer" onclick="selectAnswer(this)">
           <img src="${answer.image}" alt="answer-img">
           <span>${answer.text}</span>
         </div>
         `;
-      }else{
-        let quizzAnswers = document.querySelector(`.answer-quizz__answers--${cont}`);
+      } else {
+        let quizzAnswers = document.querySelector(
+          `.answer-quizz__answers--${cont}`
+        );
         quizzAnswers.innerHTML += `
         <div class="answers" onclick="selectAnswer(this)">
           <img src="${answer.image}" alt="answer-img">
@@ -93,16 +99,18 @@ function selectAnswer(playerAnswer) {
   let answersSection = playerAnswer.parentNode;
   const answers = answersSection.querySelectorAll(".answers");
   answers.forEach((el) => {
-    el.style.pointerEvents = 'none';
+    el.style.pointerEvents = "none";
     if (el !== playerAnswer) {
       el.classList.add("changeOpacity");
     }
-    const correctAnswer = answersSection.querySelector('.correct-answer');
-    answersSection.querySelectorAll('.answers').forEach((wrongAnswer)=> wrongAnswer.classList.add('wrongAnswer'))
-    correctAnswer.classList.add('correctColor');
+    const correctAnswer = answersSection.querySelector(".correct-answer");
+    answersSection
+      .querySelectorAll(".answers")
+      .forEach((wrongAnswer) => wrongAnswer.classList.add("wrongAnswer"));
+    correctAnswer.classList.add("correctColor");
   });
 
-  if (playerAnswer.classList.contains('correct-answer')){
+  if (playerAnswer.classList.contains("correct-answer")) {
     correctsCount += 1;
   }
 
@@ -112,33 +120,38 @@ function selectAnswer(playerAnswer) {
 }
 
 function nextQuestion() {
-  let tittleArray = document.querySelector(".questions--"+ questionCount);
-  if (tittleArray){
-    tittleArray.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
+  let tittleArray = document.querySelector(".questions--" + questionCount);
+  if (tittleArray) {
+    tittleArray.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+      inline: "nearest",
+    });
   }
   questionCount++;
 }
 
-function isFinish(){
-  if (quizzOn){
-    if (totalQuestions === countPlayerAnswer){
+function isFinish() {
+  if (quizzOn) {
+    if (totalQuestions === countPlayerAnswer) {
       quizzOn = false;
       //focar ma tela final de resposta
       const promisse = axios.get(`${QUIZ_API_URL}` + quizzSelectedID);
-      const section = document.querySelector('.answer-quizz');
+      const section = document.querySelector(".answer-quizz");
       promisse.then((response) => {
-      let quizzLevel = response.data.levels;
+        let quizzLevel = response.data.levels;
         let playerLv = playerLevel();
-        let lvArray = []
+        let lvArray = [];
         let closest;
-        quizzLevel.forEach((a)=> lvArray.push(a.minValue));
+        quizzLevel.forEach((a) => lvArray.push(a.minValue));
         // fazer um array e colocar uma variável para cada um dos niveis
-        lvArray.forEach((el)=> {
-          if (el <= playerLv){
+        lvArray.forEach((el) => {
+          if (el <= playerLv) {
             closest = el;
-          }});
-        quizzLevel.forEach((el)=>{
-          if(el.minValue === closest){
+          }
+        });
+        quizzLevel.forEach((el) => {
+          if (el.minValue === closest) {
             section.innerHTML += `
             <div class="quizz-result">
               <div class="quizz-result__header">
@@ -148,10 +161,10 @@ function isFinish(){
                 <img src="${el.image}" alt="quizz-result-img">
                 <span>${el.text}</span>
               </div>
-            </div>`
+            </div>`;
           }
         });
-        section.innerHTML+= `
+        section.innerHTML += `
         <div class="answer-quizz__buttons">
           <button class="answer-quizz__play-again-button" onclick="playagain()">
             Reiniciar Quizz
@@ -159,51 +172,54 @@ function isFinish(){
           <button class="answer-quizz__home-button" onclick="homePage()">
             Voltar para home
           </button>
-        </div>`
+        </div>`;
       });
-      setTimeout(()=>{
-        let result = document.querySelector('.quizz-result');
-        result.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
+      setTimeout(() => {
+        let result = document.querySelector(".quizz-result");
+        result.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+          inline: "nearest",
+        });
       }, 500);
-    } 
-    
+    }
   }
 }
 
-function loadScreen(condition){
+function loadScreen(condition) {
   // passar true ou false
-  const loadScreen = document.querySelector('.loader-div');
-  if(condition){
-    loadScreen.classList.remove('hidden');
+  const loadScreen = document.querySelector(".loader-div");
+  if (condition) {
+    loadScreen.classList.remove("hidden");
   } else {
-    loadScreen.classList.add('hidden');
+    loadScreen.classList.add("hidden");
   }
 }
 
-function homePage(){
+function homePage() {
   quizzOn = true;
   correctsCount = 0;
   questionCount = 2;
   totalQuestions = 0;
   countPlayerAnswer = 0;
-  document.querySelector('.answer-quizz').innerHTML = '';
-  screenFocus('.quiz-list');
-  document.querySelector('.user-quizzes-list').scrollIntoView();
+  document.querySelector(".answer-quizz").innerHTML = "";
+  screenFocus(".quiz-list");
+  document.querySelector(".user-quizzes-list").scrollIntoView();
 }
 
-function playerLevel(){
+function playerLevel() {
   let playerLvl = (correctsCount / totalQuestions) * 100;
   playerLvl = Math.round(playerLvl);
   return playerLvl;
 }
 
-function playagain(){
+function playagain() {
   quizzOn = true;
   correctsCount = 0;
   questionCount = 2;
   totalQuestions = 0;
   countPlayerAnswer = 0;
-  document.querySelector('.answer-quizz').innerHTML = '';
+  document.querySelector(".answer-quizz").innerHTML = "";
   answerQuiz(quizzSelectedID);
 }
 
@@ -272,6 +288,7 @@ function createQuizStep2() {
       return;
     }
     let j = 1;
+    let nextIncorrectAnswer;
     do {
       let testIncorrectAnswer = document.querySelector(
         `question${i + 1}-incorrect-answer${j}`
@@ -288,8 +305,10 @@ function createQuizStep2() {
         return;
       }
       j++;
-      break;
-    } while (true);
+      nextIncorrectAnswer = document.querySelector(
+        `question${i + 1}-incorrect-answer${j}`
+      );
+    } while (nextIncorrectAnswer);
   }
   for (let i = 0; i < newQuizNumberOfQuestions; i++) {
     let newQuestionTitle = document.querySelector(`#question${i + 1}`).value;
