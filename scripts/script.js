@@ -2,6 +2,9 @@
 let quizzes;
 let correctsCount = 0;
 let questionCount = 2;
+let quizzSelectedID;
+let totalQuestions = 0;
+let countPlayerAnswer = 0;
 let newQuizTitle = null;
 let newQuizImage = null;
 let newQuizQuestions = [];
@@ -33,12 +36,14 @@ function renderQuizzesPreview(response) {
 }
 
 function answerQuiz(quizId) {
-  screenFocus(document.querySelector(".answer-quizz"));
+  quizzSelectedID = quizId;
+  screenFocus(".answer-quizz");
   const promisse = axios.get(`${QUIZ_API_URL}` + quizId);
   promisse.then((response) => printSelectedAnswer(response.data));
 }
 
 function printSelectedAnswer(quizz) {
+  // organizar o quizz aleatoriamente
   const sectionHTML = document.querySelector(".answer-quizz");
   sectionHTML.innerHTML += `
   <div class="answer-quizz__header">
@@ -46,7 +51,7 @@ function printSelectedAnswer(quizz) {
     <h3>${quizz.title}</h3>
   </div>`;
   let cont = 1;
-
+  totalQuestions = quizz.questions.length;
   quizz.questions.forEach((questions) => {
     sectionHTML.innerHTML += `<div class='questions--${cont}'></div>`;
     const questionsInnerHTML = document.querySelector(`.questions--${cont}`);
@@ -93,10 +98,12 @@ function selectAnswer(playerAnswer) {
     correctsCount += 1;
   }
   const correctAnswer = answersSection.querySelector('.correct-answer');
-  answersSection.querySelectorAll('.answers').forEach((a)=> a.classList.add('wrongAnswer'))
+  answersSection.querySelectorAll('.answers').forEach((wrongAnswer)=> wrongAnswer.classList.add('wrongAnswer'))
   correctAnswer.classList.add('correctColor');
 });
   setTimeout(nextQuestion,2000);
+  countPlayerAnswer++;
+  setTimeout(isFinish,2000);
 }
 
 function nextQuestion() {
@@ -107,10 +114,49 @@ function nextQuestion() {
   questionCount++;
 }
 
+function isFinish(){
+  if (totalQuestions === countPlayerAnswer){
+    const promisse = axios.get(`${QUIZ_API_URL}` + quizzSelectedID);
+    promisse.then((response) => {
+    let quizzLevel = response.data.levels;
+    const section = document.querySelector('.answer-quizz');
+    quizzLevel.forEach((lv) =>{
+      section.innerHTML += `
+      <div class="quizz-result hidden ${}">
+        <div class="quizz-result__header">
+          <h4>${lv.title}</h4>
+        </div>
+        <div class="quizz-result__level">
+          <img src="${lv.image}" alt="quizz-result-img">
+          <span>${lv.text}</span>
+        </div>
+      </div>
+
+      <div class="answer-quizz__buttons">
+      <button class="answer-quizz__play-again-button">
+        Reiniciar Quizz
+      </button>
+      <button class="answer-quizz__home-button" onclick="screenFocus('.quiz-list')">
+        Voltar para home
+      </button>
+    </div>`
+    });
+  });
+  }
+}
+
+// function screenFocus(sectionToFocus) {
+//   console.log(sectionToFocus);
+//   const sections = document.querySelectorAll("section");
+//   sections.forEach((section) => section.classList.add("hidden"));
+//   sectionToFocus.classList.remove("hidden");
+// }
+
 function screenFocus(sectionToFocus) {
+  let section = document.querySelector(sectionToFocus);
   const sections = document.querySelectorAll("section");
   sections.forEach((section) => section.classList.add("hidden"));
-  sectionToFocus.classList.remove("hidden");
+  section.classList.remove("hidden");
 }
 
 function createQuizStep1() {

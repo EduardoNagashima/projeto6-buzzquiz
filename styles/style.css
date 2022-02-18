@@ -177,7 +177,7 @@ section.answer-quizz {
 }
 
 .answer-quizz__header h3 {
-  font-size: 19px;
+  font-size: 39px;
   font-weight: 400;
   color: #fff;
   position: absolute;
@@ -215,7 +215,7 @@ section.answer-quizz div.questions--6 {
   max-width: 759px;
   width: 100%;
   height: 89px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .answer-quizz__question-tittle--1 h4,
@@ -225,7 +225,7 @@ section.answer-quizz div.questions--6 {
 .answer-quizz__question-tittle--5 h4,
 .answer-quizz__question-tittle--6 h4 {
   font-weight: 700;
-  font-size: 19px;
+  font-size: 23px;
   color: #ffffff;
   word-break: break-all;
   text-align: center;
@@ -247,7 +247,7 @@ section.answer-quizz div.questions--6 {
 .answers {
   width: 49%;
   max-width: 350px;
-  height: 220px;
+  max-height: 220px;
   display: flex;
   flex-direction: column;
 }
@@ -256,19 +256,94 @@ section.answer-quizz div.questions--6 {
   width: 100%;
   /* Se eu tirar o height, tem algumas imagens que bugam ficando umas mais largas que outras */
   height: 100%;
-  max-height:  200px;
+  max-height:  180px;
   min-height: 120px;
   object-fit: cover;
   margin-bottom: 8px;
 }
 
 .answers span {
-  font-size: 13px;
+  font-size: 20px;
   font-weight: 700;
   color: #000000;
   word-break: break-all;
   align-self: flex-start;
   margin-bottom: 10px;
+}
+
+.quizz-result {
+  padding: 15px;
+  width: 100%; 
+  max-width: 759px;
+  margin: 0 auto 57px auto;
+  background-color: #fff; 
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+}
+
+div.quizz-result__header {
+  width: 100%;
+  height: 99px;
+  margin: 0 auto;
+  background: #EC362D;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.quizz-result__header h4{
+  font-weight: 700;
+  font-size: 23px;
+  color: #fff;
+  margin: 0 auto;
+  text-align: center;
+}
+
+
+.quizz-result__level {
+  display: flex;
+  justify-content: space-between;
+}
+
+.quizz-result__level img {
+  width: 50%;
+  object-fit: cover;
+}
+
+.quizz-result__level span {
+  font-size: 19px;
+  font-weight: 700;
+  color: #484848;
+  margin-left: 15px;
+}
+
+div.answer-quizz__buttons{
+  width: 100%;
+  margin: 0 auto; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+button.answer-quizz__play-again-button {
+  width: 261px;
+  height: 52px;
+  background-color: #EC362D;
+  border-radius: 15px;
+  border: none;
+  color: #FFF5F4;
+  font-size: 21px;
+  font-weight: 400;
+  margin-bottom: 16px;
+}
+
+.answer-quizz__home-button{
+  border: none;
+  font-size: 21px;
+  font-weight: 400;
+  color: #818181;
+  background-color: #FAFAFA;
+  margin-bottom: 30px;
 }
 
 /*---- Create quiz page ----*/
@@ -400,4 +475,61 @@ section.answer-quizz div.questions--6 {
 
 .correctColor span{
   color: #009C22;
+}
+
+/* Queria outro jeito de colocar isso nativamente sem precisar usar o @media, se tiver alguma ideia, sou todo ouvidos */
+@media(max-width:426px){
+  .answers {
+    height: 140px;
+  }
+
+  .answers span{
+    font-size: 13px;
+  }
+
+  .answer-quizz__question-tittle--1 h4,
+  .answer-quizz__question-tittle--2 h4,
+  .answer-quizz__question-tittle--3 h4,
+  .answer-quizz__question-tittle--4 h4,
+  .answer-quizz__question-tittle--5 h4,
+  .answer-quizz__question-tittle--6 h4 {
+  font-size: 19px;
+  }
+
+  .answer-quizz__header h3 {
+  font-size: 19px;
+  }
+
+  .quizz-result {
+    margin-bottom: 34px;
+  }
+
+  .quizz-result__level {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .quizz-result__level img {
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .quizz-result__header h4{
+    font-size: 19px;
+  }
+
+  .quizz-result__level span {
+    margin: 10px 0 10px 0;
+  }
+ 
+  button.answer-quizz__play-again-button{
+    width: 220px;
+    height: 44px;
+    font-size: 18px;
+  }
+
+  .answer-quizz__home-button {
+    font-size: 18px;
+  }
+
 }
