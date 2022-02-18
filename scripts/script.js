@@ -1,5 +1,7 @@
 // GLOBAL VARIABLES
 let quizzes;
+let correctsCount = 0;
+let questionCount = 2;
 let newQuizTitle = null;
 let newQuizImage = null;
 let newQuizQuestions = [];
@@ -48,22 +50,32 @@ function printSelectedAnswer(quizz) {
   quizz.questions.forEach((questions) => {
     sectionHTML.innerHTML += `<div class='questions--${cont}'></div>`;
     const questionsInnerHTML = document.querySelector(`.questions--${cont}`);
+
     questionsInnerHTML.innerHTML += `
-      <div class="answer-quizz__question-tittle">
+      <div class="answer-quizz__question-tittle--${cont}">
         <h4>${questions.title}</h4>
       </div>`;
     questionsInnerHTML.innerHTML += `<div class="answer-quizz__answers--${cont}"></div>`;
-
+    const questionTextColor = document.querySelector(`.answer-quizz__question-tittle--${cont}`);
+    questionTextColor.style.setProperty("--text-color", `${questions.color}`);
     questions.answers.forEach((answer) => {
-      let quizzAnswers = document.querySelector(
-        `.answer-quizz__answers--${cont}`
-      );
-      quizzAnswers.innerHTML += `
-      <div class="answers" onclick="selectAnswer(this)">
-        <img src="${answer.image}" alt="answer-img">
-        <span>${answer.text}</span>
-      </div>
-      `;
+      if (answer.isCorrectAnswer){
+        let quizzAnswers = document.querySelector(`.answer-quizz__answers--${cont}`);
+        quizzAnswers.innerHTML += `
+        <div class="answers correct-answer" onclick="selectAnswer(this)">
+          <img src="${answer.image}" alt="answer-img">
+          <span>${answer.text}</span>
+        </div>
+        `;
+      }else{
+        let quizzAnswers = document.querySelector(`.answer-quizz__answers--${cont}`);
+        quizzAnswers.innerHTML += `
+        <div class="answers" onclick="selectAnswer(this)">
+          <img src="${answer.image}" alt="answer-img">
+          <span>${answer.text}</span>
+        </div>
+        `;
+      }
     });
     cont++;
   });
@@ -77,22 +89,29 @@ function selectAnswer(playerAnswer) {
     if (el !== playerAnswer) {
       el.classList.add("changeOpacity");
     }
-  });
-  //setTimeout(nextQuestion, 2000);
+  if (playerAnswer.classList.contains('.correct-answer')){
+    correctsCount += 1;
+  }
+  const correctAnswer = answersSection.querySelector('.correct-answer');
+  answersSection.querySelectorAll('.answers').forEach((a)=> a.classList.add('wrongAnswer'))
+  correctAnswer.classList.add('correctColor');
+});
+  setTimeout(nextQuestion,2000);
 }
 
-/*function nextQuestion() {
-  let tittleArray = document.querySelectorAll(".answer-quizz__question-tittle");
-  tittleArray[1].scrollIntoView();
-}*/
+function nextQuestion() {
+  let tittleArray = document.querySelector(".questions--"+ questionCount);
+  if (tittleArray){
+    tittleArray.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
+  }
+  questionCount++;
+}
 
 function screenFocus(sectionToFocus) {
   const sections = document.querySelectorAll("section");
   sections.forEach((section) => section.classList.add("hidden"));
   sectionToFocus.classList.remove("hidden");
 }
-
-getQuizzes();
 
 function createQuizStep1() {
   newQuizTitle = document.querySelector("#quiz-title").value;
@@ -278,3 +297,5 @@ function renderNewQuizQuestionsInputs() {
   </form>`;
   }
 }
+
+getQuizzes();

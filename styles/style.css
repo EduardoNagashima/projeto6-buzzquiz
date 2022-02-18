@@ -3,6 +3,10 @@
   box-sizing: border-box;
 }
 
+:root {
+--text-color: red;
+}
+
 body {
   font-family: Roboto;
   background-color: #fafafa;
@@ -180,65 +184,91 @@ section.answer-quizz {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  text-align: center;
 }
 
 section.answer-quizz div.questions--1,
 section.answer-quizz div.questions--2,
 section.answer-quizz div.questions--3,
-section.answer-quizz div.questions--4 {
+section.answer-quizz div.questions--4,
+section.answer-quizz div.questions--5,
+section.answer-quizz div.questions--6 {
   background-color: #ffffff;
   width: 100%;
   max-width: 759px;
-  margin: 0 auto;
+  margin: 0 auto; 
+  padding: 15px;
+  margin-bottom: 30px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
 }
 
-.answer-quizz__question-tittle {
-  background-color: #434ca0;
+.answer-quizz__question-tittle--1,
+.answer-quizz__question-tittle--2,
+.answer-quizz__question-tittle--3,
+.answer-quizz__question-tittle--4,
+.answer-quizz__question-tittle--5,
+.answer-quizz__question-tittle--6 {
+  background-color: var(--text-color);
   display: flex;
   align-items: center;
   justify-content: center;
   max-width: 759px;
   width: 100%;
-  margin: 0 auto;
   height: 89px;
+  margin-bottom: 20px;
 }
 
-.answer-quizz__question-tittle h4 {
+.answer-quizz__question-tittle--1 h4,
+.answer-quizz__question-tittle--2 h4,
+.answer-quizz__question-tittle--3 h4,
+.answer-quizz__question-tittle--4 h4,
+.answer-quizz__question-tittle--5 h4,
+.answer-quizz__question-tittle--6 h4 {
   font-weight: 700;
   font-size: 19px;
   color: #ffffff;
-  justify-self: center;
+  word-break: break-all;
+  text-align: center;
 }
 
 .answer-quizz__answers--1,
 .answer-quizz__answers--2,
 .answer-quizz__answers--3,
-.answer-quizz__answers--4 {
-  justify-content: space-between;
-  padding: 20px;
+.answer-quizz__answers--4,
+.answer-quizz__answers--5,
+.answer-quizz__answers--6 {
   display: flex;
   flex-wrap: wrap;
+  /* Se quiser deixar a terceira opção no meio é só mudar essa propriedade para center */
+  justify-content: space-between;
+  gap:1px
 }
 
 .answers {
+  width: 49%;
+  max-width: 350px;
+  height: 220px;
   display: flex;
   flex-direction: column;
-  width: 50%;
-  max-width: 350px;
 }
 
 .answers img {
-  margin-bottom: 7px;
-  max-width: 100%;
-  max-height: 100%;
+  width: 100%;
+  /* Se eu tirar o height, tem algumas imagens que bugam ficando umas mais largas que outras */
+  height: 100%;
+  max-height:  200px;
+  min-height: 120px;
   object-fit: cover;
+  margin-bottom: 8px;
 }
 
 .answers span {
   font-size: 13px;
   font-weight: 700;
   color: #000000;
-  margin-bottom: 20px;
+  word-break: break-all;
+  align-self: flex-start;
+  margin-bottom: 10px;
 }
 
 /*---- Create quiz page ----*/
@@ -362,4 +392,12 @@ section.answer-quizz div.questions--4 {
 
 .changeOpacity {
   opacity: 0.3;
+}
+
+.wrongAnswer span{
+  color:#FF4B4B;
+}
+
+.correctColor span{
+  color: #009C22;
 }
