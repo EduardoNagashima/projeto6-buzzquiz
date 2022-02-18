@@ -44,7 +44,6 @@ function answerQuiz(quizId) {
 }
 
 function printSelectedAnswer(quizz) {
-  // organizar o quizz aleatoriamente
   const sectionHTML = document.querySelector(".answer-quizz");
   sectionHTML.innerHTML += `
   <div class="answer-quizz__header">
@@ -107,7 +106,7 @@ function selectAnswer(playerAnswer) {
 
   setTimeout(nextQuestion, 2000);
   countPlayerAnswer++;
-  setTimeout(isFinish, 2000);
+  setTimeout(isFinish, 1500);
 }
 
 function nextQuestion() {
@@ -123,19 +122,19 @@ function isFinish(){
     if (totalQuestions === countPlayerAnswer){
       quizzOn = false;
       //focar ma tela final de resposta
-      //ver o porque de estar bugando na ordem que é respondida
       const promisse = axios.get(`${QUIZ_API_URL}` + quizzSelectedID);
       const section = document.querySelector('.answer-quizz');
       promisse.then((response) => {
       let quizzLevel = response.data.levels;
-        //fazer a lógica por trás para aparecer o level que a pessoa está e passar o level como parametro
-        //para ver que nível que a pessoa é do quizz
         let playerLv = playerLevel();
         let lvArray = []
+        let closest;
         quizzLevel.forEach((a)=> lvArray.push(a.minValue));
-        let closest = lvArray.reduce(function(prev, curr) {
-          return (Math.abs(curr - playerLv) < Math.abs(prev - playerLv) ? curr : prev);
-        });
+        // fazer um array e colocar uma variável para cada um dos niveis
+        lvArray.forEach((el)=> {
+          if (el <= playerLv){
+            closest = el;
+          }});
         quizzLevel.forEach((el)=>{
           if(el.minValue === closest){
             section.innerHTML += `
@@ -155,13 +154,29 @@ function isFinish(){
           <button class="answer-quizz__play-again-button" onclick="playagain()">
             Reiniciar Quizz
           </button>
-          <button class="answer-quizz__home-button" onclick="screenFocus('.quiz-list')">
+          <button class="answer-quizz__home-button" onclick="homePage()">
             Voltar para home
           </button>
         </div>`
       });
+      setTimeout(()=>{
+        let result = document.querySelector('.quizz-result');
+        console.log(result);
+        result.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
+      }, 500);
     } 
+    
   }
+}
+
+function homePage(){
+  quizzOn = true;
+  correctsCount = 0;
+  questionCount = 2;
+  totalQuestions = 0;
+  countPlayerAnswer = 0;
+  document.querySelector('.answer-quizz').innerHTML = '';
+  screenFocus('.quiz-list');
 }
 
 function playerLevel(){

@@ -296,12 +296,12 @@ div.quizz-result__header {
   color: #fff;
   margin: 0 auto;
   text-align: center;
+  word-break: break-all;
 }
 
 
 .quizz-result__level {
   display: flex;
-  justify-content: space-between;
 }
 
 .quizz-result__level img {
@@ -314,6 +314,7 @@ div.quizz-result__header {
   font-weight: 700;
   color: #484848;
   margin-left: 15px;
+  word-break: break-all;
 }
 
 div.answer-quizz__buttons{
@@ -481,6 +482,7 @@ button.answer-quizz__play-again-button {
 @media(max-width:426px){
   .answers {
     height: 140px;
+    margin-bottom: 15px;
   }
 
   .answers span{
@@ -514,8 +516,15 @@ button.answer-quizz__play-again-button {
     object-fit: cover;
   }
 
+  .quizz-result__header{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .quizz-result__header h4{
     font-size: 19px;
+    margin: 0 10px;
   }
 
   .quizz-result__level span {
