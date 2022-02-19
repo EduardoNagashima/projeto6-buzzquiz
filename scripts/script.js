@@ -19,6 +19,7 @@ const LOCAL_STORAGE_KEY = "idList";
 
 // FUNCTIONS
 function getQuizzes() {
+  loadScreen(true);
   let promisse = axios.get(`${QUIZ_API_URL}`);
   promisse.then(renderQuizzesPreview);
 }
@@ -67,20 +68,13 @@ function renderQuizzesPreview(response) {
     }
   });
   if (userCreatedQuiz) {
-    document
-      .querySelector(".user-quizzes-list__empty-list")
-      .classList.add("hidden");
-    document
-      .querySelector(".user-quizzes-list__header")
-      .classList.remove("hidden");
+    document.querySelector(".user-quizzes-list__empty-list").classList.add("hidden");
+    document.querySelector(".user-quizzes-list__header").classList.remove("hidden");
   } else {
-    document
-      .querySelector(".user-quizzes-list__empty-list")
-      .classList.remove("hidden");
-    document
-      .querySelector(".user-quizzes-list__header")
-      .classList.add("hidden");
+    document.querySelector(".user-quizzes-list__empty-list").classList.remove("hidden");
+    document.querySelector(".user-quizzes-list__header").classList.add("hidden");
   }
+  loadScreen(false);
 }
 
 function answerQuiz(quizId) {
@@ -182,7 +176,6 @@ function isFinish() {
   if (quizzOn) {
     if (totalQuestions === countPlayerAnswer) {
       quizzOn = false;
-      //focar ma tela final de resposta
       const promisse = axios.get(`${QUIZ_API_URL}` + quizzSelectedID);
       const section = document.querySelector(".answer-quizz");
       promisse.then((response) => {
@@ -234,7 +227,6 @@ function isFinish() {
 }
 
 function loadScreen(condition) {
-  // passar true ou false
   const loadScreen = document.querySelector(".loader-div");
   if (condition) {
     loadScreen.classList.remove("hidden");
@@ -250,6 +242,7 @@ function homePage() {
   totalQuestions = 0;
   countPlayerAnswer = 0;
   document.querySelector(".answer-quizz").innerHTML = "";
+  getQuizzes();
   screenFocus(".quiz-list");
   document.querySelector(".user-quizzes-list").scrollIntoView();
 }
@@ -458,25 +451,19 @@ function createQuizFinalStep() {
     levels: newQuizLevels,
   };
   let promisse = axios.post(QUIZ_API_URL, newQuiz);
+  loadScreen(true);
   promisse.then((response) => {
     console.log(response);
     getQuizzes();
     pushQuizIdToLocalStorage(response.data.id);
-    document
-      .querySelector(".quiz-creation__success .quiz-preview img")
-      .setAttribute("src", newQuizImage);
-    document.querySelector(
-      ".quiz-creation__success .quiz-preview p"
-    ).innerHTML = newQuizTitle;
-    document
-      .querySelector(".quiz-creation__success button:first-child")
-      .setAttribute("onclick", `answerQuiz(${response.data.id})`);
+    document.querySelector(".quiz-creation__success .quiz-preview img").setAttribute("src", newQuizImage);
+    document.querySelector(".quiz-creation__success .quiz-preview p").innerHTML = newQuizTitle;
+    document.querySelector(".quiz-creation__success button:first-child").setAttribute("onclick", `answerQuiz(${response.data.id})`);
     document.querySelector(".quiz-creation__levels").classList.add("hidden");
-    document
-      .querySelector(".quiz-creation__success")
-      .classList.remove("hidden");
+    document.querySelector(".quiz-creation__success").classList.remove("hidden");
+    loadScreen(false);
   });
-  promisse.catch((response) => console.log(response));
+  promisse.catch((response) =>{console.log(response); loadScreen(false)});
 }
 
 function pushQuizIdToLocalStorage(quizID) {
