@@ -487,17 +487,20 @@ button.answer-quizz__play-again-button {
 .loader-div {
   z-index: 2;
   width: 100%;
-  position: absolute;
   height: 100%;
+  position: fixed;
   background-color: #fff;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  position: fixed;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+}
+
+.loader-div .pacman {
+  margin-left: 28px;
 }
 
 .loader-div span {
@@ -505,7 +508,6 @@ button.answer-quizz__play-again-button {
   font-size: 26px;
   color: #ec362d;
   text-align: center;
-  margin-left: -35px;
 }
 
 .hidden {
