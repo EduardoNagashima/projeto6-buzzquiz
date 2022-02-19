@@ -11,6 +11,7 @@ let newQuizImage = null;
 let newQuizQuestions = [];
 let newQuizNumberOfQuestions;
 let newQuizLevels = [];
+let userQuizzIDs = [];
 let newQuizNumberOfLevels;
 let userCreatedQuiz = false;
 const QUIZ_API_URL = "https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes/";
@@ -35,8 +36,8 @@ function renderQuizzesPreview(response) {
     if (idList !== null) {
       if (idList.find((id) => id === element.id)) {
         userCreatedQuiz = true;
-        userQuizzesUL += `<li class="quizz-preview" onclick="answerQuiz(${element.id})">
-              <img src=${element.image}/>
+        userQuizzesUL.innerHTML += `<li class="quizz-preview" onclick="answerQuiz(${element.id})">
+              <img src="${element.image}"/>
               <div class="quizz-preview__linear-gradient">
                 <p>${element.title}
                 </p>
@@ -46,10 +47,18 @@ function renderQuizzesPreview(response) {
                 <ion-icon name="trash-outline" onclick = "deleteQuiz(${element.id})"></ion-icon>
               <div>
             </li>`;
+      } else {
+        quizzesUL.innerHTML += `<li class="quizz-preview" onclick="answerQuiz(${element.id})">
+            <img src="${element.image}"/>
+            <div class="quizz-preview__linear-gradient">
+              <p>${element.title}
+              </p>
+            </div>
+          </li>`;
       }
     } else {
       quizzesUL.innerHTML += `<li class="quizz-preview" onclick="answerQuiz(${element.id})">
-            <img src=${element.image}/>
+            <img src="${element.image}"/>
             <div class="quizz-preview__linear-gradient">
               <p>${element.title}
               </p>
@@ -470,7 +479,20 @@ function createQuizFinalStep() {
   promisse.catch((response) => console.log(response));
 }
 
-function pushQuizIdToLocalStorage(quizID) {}
+function pushQuizIdToLocalStorage(quizID) {
+  let stringToArray = localStorage.getItem(LOCAL_STORAGE_KEY);
+  console.log(stringToArray);
+  if (stringToArray){
+    userQuizzIDs = JSON.parse(stringToArray);
+    userQuizzIDs.push(quizID);
+    let arrayToString = JSON.stringify(userQuizzIDs);
+    localStorage.setItem(LOCAL_STORAGE_KEY, arrayToString);
+  } else {
+    userQuizzIDs.push(quizID);
+    let arrayToString = JSON.stringify(userQuizzIDs);
+    localStorage.setItem(LOCAL_STORAGE_KEY, arrayToString);
+  }
+}
 
 function isValidUrl(_string) {
   const matchpattern =
@@ -584,3 +606,77 @@ function teste() {
   <div>
 </li></ul>`;
 }
+
+// DESCOMENTAR ESSA FUNÇÃO PARA TESTAR CRIAÇÃO DE QUIZZ
+// function createQuizz(){
+//   let promisse = axios.post('https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes',{
+//     title: "AGORA FOI!",
+//     image: "https://http.cat/411.jpg",
+//     questions: [
+//       {
+//         title: "Título da pergunta 1",
+//         color: "#123456",
+//         answers: [
+//           {
+//             text: "Texto da resposta 1",
+//             image: "https://http.cat/411.jpg",
+//             isCorrectAnswer: true
+//           },
+//           {
+//             text: "Texto da resposta 2",
+//             image: "https://http.cat/412.jpg",
+//             isCorrectAnswer: false
+//           }
+//         ]
+//       },
+//       {
+//         title: "Título da pergunta 2",
+//         color: "#123456",
+//         answers: [
+//           {
+//             text: "Texto da resposta 1",
+//             image: "https://http.cat/411.jpg",
+//             isCorrectAnswer: true
+//           },
+//           {
+//             text: "Texto da resposta 2",
+//             image: "https://http.cat/412.jpg",
+//             isCorrectAnswer: false
+//           }
+//         ]
+//       },
+//       {
+//         title: "Título da pergunta 3",
+//         color: "#123456",
+//         answers: [
+//           {
+//             text: "Texto da resposta 1",
+//             image: "https://http.cat/411.jpg",
+//             isCorrectAnswer: true
+//           },
+//           {
+//             text: "Texto da resposta 2",
+//             image: "https://http.cat/412.jpg",
+//             isCorrectAnswer: false
+//           }
+//         ]
+//       }
+//     ],
+//     levels: [
+//       {
+//         title: "Título do nível 1",
+//         image: "https://http.cat/411.jpg",
+//         text: "Descrição do nível 1",
+//         minValue: 0
+//       },
+//       {
+//         title: "Título do nível 2",
+//         image: "https://http.cat/412.jpg",
+//         text: "Descrição do nível 2",
+//         minValue: 50
+//       }
+//     ]
+//   });
+//   promisse.then((response)=> pushQuizIdToLocalStorage(response.data.id));
+// }
+//createQuizz();
