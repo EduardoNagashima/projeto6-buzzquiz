@@ -32,16 +32,7 @@
             onclick="screenFocus('.quiz-creation')"
           ></ion-icon>
         </div>
-        <ul>
-          <li class="quizz-preview">
-            <img src="images/simpsons.webp" alt="" />
-            <div class="quizz-preview__linear-gradient">
-              <p>
-                Acerte os personagens corretos dos Simpsons e prove seu amor!
-              </p>
-            </div>
-          </li>
-        </ul>
+        <ul></ul>
       </div>
       <div class="all-quizzes-list">
         <h2>Todos os Quizzes</h2>
@@ -87,34 +78,7 @@
         </button>
       </div>
       <div class="quiz-creation__questions hidden"></div>
-      <div class="quiz-creation__levels hidden">
-        <h2>Agora, decida os níveis</h2>
-        <form action="">
-          <h2>Nível 1</h2>
-          <input type="text" id="level1-title" placeholder="Título do nível" />
-          <input
-            type="text"
-            id="level1-min-percent"
-            placeholder="% de acerto mínima"
-          />
-          <input
-            type="text"
-            id="level1-image-URL"
-            placeholder="URL da imagem do nível"
-          />
-          <textarea
-            id="level1-description"
-            placeholder="Descrição do nível"
-          ></textarea>
-        </form>
-        <form action="">
-          <h2>Nível 2</h2>
-        </form>
-        <form action="">
-          <h2>Nível 3</h2>
-        </form>
-        <button onclick="createQuizFinalStep()">Finalizar Quizz</button>
-      </div>
+      <div class="quiz-creation__levels hidden"></div>
       <div class="quiz-creation__success hidden">
         <h2>Seu quizz está pronto</h2>
         <div class="quiz-preview">
@@ -124,7 +88,7 @@
           </div>
         </div>
         <button>Acessar Quizz</button>
-        <button>Voltar pra home</button>
+        <button onclick="screenFocus('.quiz-list')">Voltar pra home</button>
       </div>
     </section>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
