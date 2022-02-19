@@ -182,13 +182,15 @@ function isFinish() {
         let quizzLevel = response.data.levels;
         let playerLv = playerLevel();
         let lvArray = [];
-        let closest;
+        let closest = 0;
         quizzLevel.forEach((a) => lvArray.push(a.minValue));
-        // fazer um array e colocar uma variável para cada um dos niveis
         lvArray.forEach((el) => {
-          if (el <= playerLv) {
-            closest = el;
+          if (playerLv >= el) {
+            if(el >= closest){
+              closest = el;
+            }
           }
+          console.log(closest);
         });
         quizzLevel.forEach((el) => {
           if (el.minValue === closest) {
