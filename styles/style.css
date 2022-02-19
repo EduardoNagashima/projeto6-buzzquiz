@@ -595,10 +595,13 @@ transform-origin: 0 0; /* see note above */
 @media (max-width: 759px) {
   .answers span {
     font-size: 13px;
+    margin-bottom: 8px;
   }
 
   .answers img {
+    height: auto;
     aspect-ratio: 10 / 7;
+    margin-bottom: 5px;
   }
 
   .answer-quizz__question-tittle--1 h4,
