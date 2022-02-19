@@ -157,6 +157,29 @@ header h1 {
   overflow: hidden;
 }
 
+.quizz-preview .quizz-preview__options {
+  height: 87px;
+  width: 43px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px 0px 0px 11px;
+  background-color: #ec362d;
+  position: absolute;
+  top: 9px;
+  right: 0;
+  gap: 15px;
+  padding-top: 10px;
+  /* padding: 9px 12px; */
+}
+
+.quizz-preview ion-icon {
+  color: white;
+  height: 25px;
+  width: 25px;
+}
+
 /*---- Answer quizz page ----*/
 section.answer-quizz {
   margin-top: 69px;

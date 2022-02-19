@@ -41,6 +41,10 @@ function renderQuizzesPreview(response) {
                 <p>${element.title}
                 </p>
               </div>
+              <div class = "quiz-preview__options">
+                <ion-icon name="create-outline" onclick = "editQuiz(${element.id})"></ion-icon>
+                <ion-icon name="trash-outline" onclick = "deleteQuiz(${element.id})"></ion-icon>
+              <div>
             </li>`;
       }
     } else {
@@ -559,4 +563,24 @@ function renderNewQuizLevelsInputs() {
   div.innerHTML += `<button onclick="createQuizFinalStep()">Finalizar Quizz</button>`;
 }
 
+function editQuiz(quizID) {}
+
+function deleteQuiz(quizID) {}
+
 getQuizzes();
+
+function teste() {
+  document.querySelector(
+    ".user-quizzes-list__empty-list"
+  ).innerHTML = `<ul><li class="quizz-preview" onclick="answerQuiz(10)">
+  <img src="https://ciclovivo.com.br/wp-content/uploads/2020/09/tree-3822149_1280.jpg"/>
+  <div class="quizz-preview__linear-gradient">
+    <p>Teste oioi
+    </p>
+  </div>
+  <div class = "quizz-preview__options">
+    <ion-icon name="create-outline"></ion-icon>
+    <ion-icon name="trash-outline"></ion-icon>
+  <div>
+</li></ul>`;
+}
