@@ -152,9 +152,9 @@ header h1 {
 .quizz-preview p {
   font-family: Roboto;
   font-size: 19px;
-  line-height: 22px;
-  /* color: #ffffff; */
-  color: red;
+  line-height: 22px; 
+  color: #ffffff;
+  font-weight: 400;
   max-width: 100%;
   overflow: hidden;
 }

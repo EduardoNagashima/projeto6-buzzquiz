@@ -15,6 +15,7 @@ let userQuizzIDs = [];
 let newQuizNumberOfLevels;
 let userCreatedQuiz = false;
 let quizToEdit = null;
+let quizToDelete = null;
 const QUIZ_API_URL = "https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes/";
 const LOCAL_STORAGE_KEY = "idList";
 
@@ -41,8 +42,8 @@ function renderQuizzesPreview(response) {
         userCreatedQuiz = true;
         userQuizzesUL.innerHTML += `<li class="quizz-preview">
               <img src="${element.image}"/>
-              <div class="quizz-preview__linear-gradient">
-                <p onclick="answerQuiz(${element.id})">${element.title}
+              <div class="quizz-preview__linear-gradient" onclick="answerQuiz(${element.id})">
+                <p >${element.title}
                 </p>
               </div>
               <div class="quizz-preview__options">
@@ -783,9 +784,36 @@ function goHomeEditQuiz() {
   document
     .querySelector(".quiz-creation__basic-info")
     .classList.remove("hidden");
+  getQuizzes();
 }
 
-function deleteQuiz(quizID) {}
+function deleteQuiz(quizID) {
+  const result = window.confirm('Tem certeza que quer excluir o quizz?');
+  if(result){
+    quizToDeleteID = quizID;
+    let stringToArray = localStorage.getItem(LOCAL_STORAGE_KEY);
+    let userQuizzIDs = JSON.parse(stringToArray);
+    let quizToDeleteSecretKey;
+    console.log(userQuizzIDs);
+
+    for (let i = 0; i < userQuizzIDs.length; i++) {
+      if (quizToDeleteID === userQuizzIDs[i].id) {
+        quizToDeleteSecretKey = userQuizzIDs[i].key;
+        break;
+      }
+    }
+    let config = {
+      headers: {
+        "Secret-Key": quizToDeleteSecretKey,
+      }
+    };
+    loadScreen(true);
+    let promisse = axios.delete(QUIZ_API_URL + quizToDeleteID, config);
+    promisse.then(()=>getQuizzes())
+  }else{
+    getQuizzes();
+  }
+}
 
 getQuizzes();
 
@@ -899,7 +927,8 @@ function createQuizz() {
     pushQuizIdToLocalStorage(response.data.id, response.data.key);
   });
 }
-//createQuizz();
+
+// createQuizz();
 
 /*
 function renderQuizzesPreview(response) {
