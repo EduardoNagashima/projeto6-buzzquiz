@@ -169,16 +169,20 @@ function selectAnswer(playerAnswer) {
 }
 
 function nextQuestion() {
-  let tittleArray = document.querySelector(".questions--" + questionCount);
-  if (tittleArray) {
-    tittleArray.scrollIntoView({
-      behavior: "smooth",
-      block: "center",
-      inline: "nearest",
-    });
+  const allQuestion = document.querySelectorAll('.answers');
+  for (let i = 0; i < allQuestion.length; i++){
+    if(allQuestion[i].classList.contains('wrongAnswer') || allQuestion[i].classList.contains('correctColor')){
+    } else {
+      const questionTittle = allQuestion[i].parentNode.parentNode;
+      questionTittle.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        inline: "nearest",
+      });
+      break;
+    }
   }
-  questionCount++;
-}
+  }
 
 function isFinish() {
   if (quizzOn) {
@@ -198,7 +202,6 @@ function isFinish() {
               closest = el;
             }
           }
-          console.log(closest);
         });
         quizzLevel.forEach((el) => {
           if (el.minValue === closest) {
@@ -489,7 +492,6 @@ function createQuizFinalStep() {
 
 function pushQuizIdToLocalStorage(quizID) {
   let stringToArray = localStorage.getItem(LOCAL_STORAGE_KEY);
-  console.log(stringToArray);
   if (stringToArray) {
     userQuizzIDs = JSON.parse(stringToArray);
     userQuizzIDs.push(quizID);
@@ -679,7 +681,6 @@ function teste3() {
   promisse.then((response) => console.log(response.data));
 }
 
-// DESCOMENTAR ESSA FUNÇÃO PARA TESTAR CRIAÇÃO DE QUIZZ
 // function createQuizz(){
 //   let promisse = axios.post('https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes',{
 //     title: "AGORA FOI!",
@@ -751,7 +752,7 @@ function teste3() {
 //   });
 //   promisse.then((response)=> pushQuizIdToLocalStorage(response.data.id));
 // }
-//createQuizz();
+// createQuizz();
 
 /*
 function renderQuizzesPreview(response) {
@@ -813,4 +814,5 @@ function renderQuizzesPreview(response) {
       .classList.add("hidden");
   }
   loadScreen(false);
-}*/
+}
+*/
