@@ -173,7 +173,8 @@ function nextQuestion() {
   for (let i = 0; i < allQuestion.length; i++){
     if(allQuestion[i].classList.contains('wrongAnswer') || allQuestion[i].classList.contains('correctColor')){
     } else {
-      allQuestion[i].scrollIntoView({
+      const questionTittle = allQuestion[i].parentNode.parentNode;
+      questionTittle.scrollIntoView({
         behavior: "smooth",
         block: "center",
         inline: "nearest",
