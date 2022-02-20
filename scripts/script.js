@@ -585,6 +585,24 @@ function openAccordionForm(div, formToOpen) {
   }
   form[formToOpen].classList.remove("form--accordion");
   form[formToOpen].setAttribute("onclick", "");
+  setTimeout(
+    () =>
+      window.scrollTo({
+        top: findPos(form[formToOpen]) - 65,
+        behavior: "smooth",
+      }),
+    500
+  );
+}
+
+function findPos(obj) {
+  var curtop = 0;
+  if (obj.offsetParent) {
+    do {
+      curtop += obj.offsetTop;
+    } while ((obj = obj.offsetParent));
+    return [curtop];
+  }
 }
 
 function renderNewQuizLevelsInputs() {
@@ -652,6 +670,13 @@ function teste2() {
     .classList.remove("hidden");
   newQuizNumberOfQuestions = 3;
   renderNewQuizQuestionsInputs();
+}
+
+function teste3() {
+  let valorSerializado = localStorage.getItem(LOCAL_STORAGE_KEY);
+  let valor = JSON.parse(valorSerializado);
+  let promisse = axios.get(QUIZ_API_URL + valor[0]);
+  promisse.then((response) => console.log(response.data));
 }
 
 // DESCOMENTAR ESSA FUNÇÃO PARA TESTAR CRIAÇÃO DE QUIZZ
@@ -727,3 +752,65 @@ function teste2() {
 //   promisse.then((response)=> pushQuizIdToLocalStorage(response.data.id));
 // }
 //createQuizz();
+
+/*
+function renderQuizzesPreview(response) {
+  userCreatedQuiz = false;
+  const quizzesUL = document.querySelector(".all-quizzes-list ul");
+  const userQuizzesUL = document.querySelector(".user-quizzes-list ul");
+  quizzesUL.innerHTML = "";
+  userQuizzesUL.innerHTML = "";
+  quizzes = response.data;
+  const idListJSON = localStorage.getItem(LOCAL_STORAGE_KEY);
+  const idList = JSON.parse(idListJSON);
+  quizzes.forEach((element) => {
+    if (idList !== null) {
+      if (idList.find((id) => id === element.id)) {
+        userCreatedQuiz = true;
+        userQuizzesUL.innerHTML += `<li class="quizz-preview" onclick="answerQuiz(${element.id})">
+              <img src="${element.image}"/>
+              <div class="quizz-preview__linear-gradient">
+                <p>${element.title}
+                </p>
+              </div>
+              <div class="quizz-preview__options">
+                <ion-icon name="create-outline" onclick = "editQuiz(${element.id})"></ion-icon>
+                <ion-icon name="trash-outline" onclick = "deleteQuiz(${element.id})"></ion-icon>
+              <div>
+            </li>`;
+      } else {
+        quizzesUL.innerHTML += `<li class="quizz-preview" onclick="answerQuiz(${element.id})">
+            <img src="${element.image}"/>
+            <div class="quizz-preview__linear-gradient">
+              <p>${element.title}
+              </p>
+            </div>
+          </li>`;
+      }
+    } else {
+      quizzesUL.innerHTML += `<li class="quizz-preview" onclick="answerQuiz(${element.id})">
+            <img src="${element.image}"/>
+            <div class="quizz-preview__linear-gradient">
+              <p>${element.title}
+              </p>
+            </div>
+          </li>`;
+    }
+  });
+  if (userCreatedQuiz) {
+    document
+      .querySelector(".user-quizzes-list__empty-list")
+      .classList.add("hidden");
+    document
+      .querySelector(".user-quizzes-list__header")
+      .classList.remove("hidden");
+  } else {
+    document
+      .querySelector(".user-quizzes-list__empty-list")
+      .classList.remove("hidden");
+    document
+      .querySelector(".user-quizzes-list__header")
+      .classList.add("hidden");
+  }
+  loadScreen(false);
+}*/
