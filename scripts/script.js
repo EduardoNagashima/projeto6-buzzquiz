@@ -43,7 +43,7 @@ function renderQuizzesPreview(response) {
                 <p>${element.title}
                 </p>
               </div>
-              <div class = "quiz-preview__options">
+              <div class="quizz-preview__options">
                 <ion-icon name="create-outline" onclick = "editQuiz(${element.id})"></ion-icon>
                 <ion-icon name="trash-outline" onclick = "deleteQuiz(${element.id})"></ion-icon>
               <div>
@@ -68,11 +68,19 @@ function renderQuizzesPreview(response) {
     }
   });
   if (userCreatedQuiz) {
-    document.querySelector(".user-quizzes-list__empty-list").classList.add("hidden");
-    document.querySelector(".user-quizzes-list__header").classList.remove("hidden");
+    document
+      .querySelector(".user-quizzes-list__empty-list")
+      .classList.add("hidden");
+    document
+      .querySelector(".user-quizzes-list__header")
+      .classList.remove("hidden");
   } else {
-    document.querySelector(".user-quizzes-list__empty-list").classList.remove("hidden");
-    document.querySelector(".user-quizzes-list__header").classList.add("hidden");
+    document
+      .querySelector(".user-quizzes-list__empty-list")
+      .classList.remove("hidden");
+    document
+      .querySelector(".user-quizzes-list__header")
+      .classList.add("hidden");
   }
   loadScreen(false);
 }
@@ -186,7 +194,7 @@ function isFinish() {
         quizzLevel.forEach((a) => lvArray.push(a.minValue));
         lvArray.forEach((el) => {
           if (playerLv >= el) {
-            if(el >= closest){
+            if (el >= closest) {
               closest = el;
             }
           }
@@ -458,20 +466,31 @@ function createQuizFinalStep() {
     console.log(response);
     getQuizzes();
     pushQuizIdToLocalStorage(response.data.id);
-    document.querySelector(".quiz-creation__success .quiz-preview img").setAttribute("src", newQuizImage);
-    document.querySelector(".quiz-creation__success .quiz-preview p").innerHTML = newQuizTitle;
-    document.querySelector(".quiz-creation__success button:first-child").setAttribute("onclick", `answerQuiz(${response.data.id})`);
+    document
+      .querySelector(".quiz-creation__success .quiz-preview img")
+      .setAttribute("src", newQuizImage);
+    document.querySelector(
+      ".quiz-creation__success .quiz-preview p"
+    ).innerHTML = newQuizTitle;
+    document
+      .querySelector(".quiz-creation__success button")
+      .setAttribute("onclick", `answerQuiz(${response.data.id})`);
     document.querySelector(".quiz-creation__levels").classList.add("hidden");
-    document.querySelector(".quiz-creation__success").classList.remove("hidden");
+    document
+      .querySelector(".quiz-creation__success")
+      .classList.remove("hidden");
     loadScreen(false);
   });
-  promisse.catch((response) =>{console.log(response); loadScreen(false)});
+  promisse.catch((response) => {
+    console.log(response);
+    loadScreen(false);
+  });
 }
 
 function pushQuizIdToLocalStorage(quizID) {
   let stringToArray = localStorage.getItem(LOCAL_STORAGE_KEY);
   console.log(stringToArray);
-  if (stringToArray){
+  if (stringToArray) {
     userQuizzIDs = JSON.parse(stringToArray);
     userQuizzIDs.push(quizID);
     let arrayToString = JSON.stringify(userQuizzIDs);
@@ -510,6 +529,7 @@ function renderNewQuizQuestionsInputs() {
   for (let i = 0; i < newQuizNumberOfQuestions; i++) {
     div.innerHTML += `<form action="">
     <h2>Pergunta ${i + 1}</h2>
+    <ion-icon name="create-outline"></ion-icon>
     <input type="text" id="question${i + 1}" placeholder="Texto da pergunta">
     <input type="text" id="question${
       i + 1
@@ -545,7 +565,26 @@ function renderNewQuizQuestionsInputs() {
   div.innerHTML += `<button onclick="createQuizStep2()">
     Prosseguir para criar níveis
   </button>`;
-  console.log(document.querySelectorAll(".quiz-creation input"));
+  let form = div.querySelectorAll("form");
+  for (let i = 1; i < form.length; i++) {
+    form[i].classList.add("form--accordion");
+    form[i].setAttribute(
+      "onclick",
+      `openAccordionForm("quiz-creation__questions", ${i})`
+    );
+  }
+}
+
+function openAccordionForm(div, formToOpen) {
+  let form = document.querySelectorAll(`.${div} form`);
+  for (let i = 0; i < form.length; i++) {
+    if (!form[i].classList.contains("form--accordion")) {
+      form[i].classList.add("form--accordion");
+      form[i].setAttribute("onclick", `openAccordionForm("${div}" ,${i})`);
+    }
+  }
+  form[formToOpen].classList.remove("form--accordion");
+  form[formToOpen].setAttribute("onclick", "");
 }
 
 function renderNewQuizLevelsInputs() {
@@ -554,6 +593,7 @@ function renderNewQuizLevelsInputs() {
   for (let i = 0; i < newQuizNumberOfLevels; i++) {
     div.innerHTML += `<form>
     <h2>Nível ${i + 1}</h2>
+    <ion-icon name="create-outline"></ion-icon>
     <input type="text" id="level${i + 1}-title" placeholder="Título do nível" />
     <input
       type="text"
@@ -572,6 +612,14 @@ function renderNewQuizLevelsInputs() {
   </form>`;
   }
   div.innerHTML += `<button onclick="createQuizFinalStep()">Finalizar Quizz</button>`;
+  let form = div.querySelectorAll("form");
+  for (let i = 1; i < form.length; i++) {
+    form[i].classList.add("form--accordion");
+    form[i].setAttribute(
+      "onclick",
+      `openAccordionForm("quiz-creation__levels" ,${i})`
+    );
+  }
 }
 
 function editQuiz(quizID) {}
@@ -594,6 +642,16 @@ function teste() {
     <ion-icon name="trash-outline"></ion-icon>
   <div>
 </li></ul>`;
+}
+
+function teste2() {
+  screenFocus(".quiz-creation");
+  document.querySelector(".quiz-creation__basic-info").classList.add("hidden");
+  document
+    .querySelector(".quiz-creation__questions")
+    .classList.remove("hidden");
+  newQuizNumberOfQuestions = 3;
+  renderNewQuizQuestionsInputs();
 }
 
 // DESCOMENTAR ESSA FUNÇÃO PARA TESTAR CRIAÇÃO DE QUIZZ
