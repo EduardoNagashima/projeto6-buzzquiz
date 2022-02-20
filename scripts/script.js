@@ -169,23 +169,18 @@ function selectAnswer(playerAnswer) {
 }
 
 function nextQuestion() {
-  const nextTittleArray = document.querySelector(".questions--" + questionCount);
-  const currentTittleArray = document.querySelector(".questions--" + (questionCount -1));
-  const unansweredAnswer  = currentTittleArray.parentNode.querySelector('.answers');
-  if(unansweredAnswer.classList.contains('wrongAnswer') || unansweredAnswer.classList.contains('correctColor')){
-    nextTittleArray.scrollIntoView({
+  const allQuestion = document.querySelectorAll('.answers');
+  for (let i = 0; i < allQuestion.length; i++){
+    if(allQuestion[i].classList.contains('wrongAnswer') || allQuestion[i].classList.contains('correctColor')){
+    } else {
+      allQuestion[i].scrollIntoView({
         behavior: "smooth",
         block: "center",
         inline: "nearest",
       });
-    questionCount++;
-  } else {
-    currentTittleArray.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-        inline: "nearest",
-      });
+      break;
     }
+  }
   }
 
 function isFinish() {
