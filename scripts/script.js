@@ -312,35 +312,6 @@ function createQuizStep1() {
     .classList.remove("hidden");
 }
 
-function editQuizStep1() {
-  newQuizTitle = document.querySelector("#quiz-title").value;
-  newQuizImage = document.querySelector("#quiz-URL").value;
-  newQuizNumberOfQuestions = document.querySelector("#quiz-questions").value;
-  newQuizNumberOfLevels = document.querySelector("#quiz-levels").value;
-
-  if (newQuizTitle.length < 20 || newQuizTitle.length > 65) {
-    alert("Erro no título");
-    return;
-  }
-  if (!isValidUrl(newQuizImage)) {
-    alert("Erro na imagem");
-    return;
-  }
-  if (newQuizNumberOfQuestions < 3) {
-    alert("Erro nas perguntas");
-    return;
-  }
-  if (newQuizNumberOfLevels < 2) {
-    alert("Erro nos níveis");
-    return;
-  }
-  renderNewQuizQuestionsInputs();
-  document.querySelector(".quiz-creation__basic-info").classList.add("hidden");
-  document
-    .querySelector(".quiz-creation__questions")
-    .classList.remove("hidden");
-}
-
 function createQuizStep2() {
   for (let i = 0; i < newQuizNumberOfQuestions; i++) {
     let testQuestion = document.querySelector(`#question${i + 1}`).value;
@@ -671,10 +642,7 @@ function renderNewQuizLevelsInputs() {
   }
 }
 
-function editQuiz(quizID) {
-  editQuizStep1(quizID);
-
-}
+function editQuiz(quizID) {}
 
 function deleteQuiz(quizID) {}
 
