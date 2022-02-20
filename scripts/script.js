@@ -44,7 +44,7 @@ function renderQuizzesPreview(response) {
                 </p>
               </div>
               <div class="quizz-preview__options">
-                <ion-icon name="create-outline" onclick = "editQuiz(${element.id})"></ion-icon>
+                <ion-icon name="create-outline" onclick = "editQuiz(${element})"></ion-icon>
                 <ion-icon name="trash-outline" onclick = "deleteQuiz(${element.id})"></ion-icon>
               <div>
             </li>`;
