@@ -14,6 +14,7 @@ let newQuizLevels = [];
 let userQuizzIDs = [];
 let newQuizNumberOfLevels;
 let userCreatedQuiz = false;
+let quizToEdit = null;
 const QUIZ_API_URL = "https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes/";
 const LOCAL_STORAGE_KEY = "idList";
 
@@ -33,18 +34,19 @@ function renderQuizzesPreview(response) {
   quizzes = response.data;
   const idListJSON = localStorage.getItem(LOCAL_STORAGE_KEY);
   const idList = JSON.parse(idListJSON);
+  console.log(idList);
   quizzes.forEach((element) => {
     if (idList !== null) {
-      if (idList.find((id) => id === element.id)) {
+      if (idList.find((id) => id.id === element.id)) {
         userCreatedQuiz = true;
-        userQuizzesUL.innerHTML += `<li class="quizz-preview" onclick="answerQuiz(${element.id})">
+        userQuizzesUL.innerHTML += `<li class="quizz-preview">
               <img src="${element.image}"/>
               <div class="quizz-preview__linear-gradient">
-                <p>${element.title}
+                <p onclick="answerQuiz(${element.id})">${element.title}
                 </p>
               </div>
               <div class="quizz-preview__options">
-                <ion-icon name="create-outline" onclick = "editQuiz(${element})"></ion-icon>
+                <ion-icon name="create-outline" onclick = "editQuiz(${element.id})"></ion-icon>
                 <ion-icon name="trash-outline" onclick = "deleteQuiz(${element.id})"></ion-icon>
               <div>
             </li>`;
@@ -169,9 +171,12 @@ function selectAnswer(playerAnswer) {
 }
 
 function nextQuestion() {
-  const allQuestion = document.querySelectorAll('.answers');
-  for (let i = 0; i < allQuestion.length; i++){
-    if(allQuestion[i].classList.contains('wrongAnswer') || allQuestion[i].classList.contains('correctColor')){
+  const allQuestion = document.querySelectorAll(".answers");
+  for (let i = 0; i < allQuestion.length; i++) {
+    if (
+      allQuestion[i].classList.contains("wrongAnswer") ||
+      allQuestion[i].classList.contains("correctColor")
+    ) {
     } else {
       const questionTittle = allQuestion[i].parentNode.parentNode;
       questionTittle.scrollIntoView({
@@ -182,7 +187,7 @@ function nextQuestion() {
       break;
     }
   }
-  }
+}
 
 function isFinish() {
   if (quizzOn) {
@@ -463,17 +468,59 @@ function createQuizFinalStep() {
     questions: newQuizQuestions,
     levels: newQuizLevels,
   };
+  if (quizToEdit) {
+    let stringToArray = localStorage.getItem(LOCAL_STORAGE_KEY);
+    let userQuizzIDs = JSON.parse(stringToArray);
+    console.log(userQuizzIDs);
+    let quizToEditSecretKey;
+    for (let i = 0; i < userQuizzIDs.length; i++) {
+      if (quizToEdit.id === userQuizzIDs[i].id) {
+        quizToEditSecretKey = userQuizzIDs[i].key;
+        break;
+      }
+    }
+    console.log(quizToEditSecretKey);
+    console.log(newQuiz);
+    let config = {
+      headers: {
+        "Secret-Key": quizToEditSecretKey,
+      },
+    };
+    let promisse = axios.put(QUIZ_API_URL + quizToEdit.id, newQuiz, config);
+    loadScreen(true);
+    promisse.then(() => {
+      getQuizzes();
+      document
+        .querySelector(".quiz-creation__success .quizz-preview img")
+        .setAttribute("src", newQuizImage);
+      document.querySelector(
+        ".quiz-creation__success .quizz-preview p"
+      ).innerHTML = newQuizTitle;
+      document
+        .querySelector(".quiz-creation__success button")
+        .setAttribute("onclick", `answerQuiz(${quizToEdit.id})`);
+      document.querySelector(".quiz-creation__levels").classList.add("hidden");
+      document
+        .querySelector(".quiz-creation__success")
+        .classList.remove("hidden");
+      loadScreen(false);
+      quizToEdit = null;
+      newQuizLevels = [];
+      newQuizQuestions = [];
+    });
+    return;
+  }
   let promisse = axios.post(QUIZ_API_URL, newQuiz);
   loadScreen(true);
   promisse.then((response) => {
     console.log(response);
     getQuizzes();
-    pushQuizIdToLocalStorage(response.data.id);
+    pushQuizIdToLocalStorage(response.data.id, response.data.key);
     document
-      .querySelector(".quiz-creation__success .quiz-preview img")
+      .querySelector(".quiz-creation__success .quizz-preview img")
       .setAttribute("src", newQuizImage);
     document.querySelector(
-      ".quiz-creation__success .quiz-preview p"
+      ".quiz-creation__success .quizz-preview p"
     ).innerHTML = newQuizTitle;
     document
       .querySelector(".quiz-creation__success button")
@@ -483,25 +530,30 @@ function createQuizFinalStep() {
       .querySelector(".quiz-creation__success")
       .classList.remove("hidden");
     loadScreen(false);
+    newQuizLevels = [];
+    newQuizQuestions = [];
   });
   promisse.catch((response) => {
     console.log(response);
     loadScreen(false);
+    newQuizLevels = [];
+    newQuizQuestions = [];
   });
 }
 
-function pushQuizIdToLocalStorage(quizID) {
+function pushQuizIdToLocalStorage(quizID, quizKey) {
   let stringToArray = localStorage.getItem(LOCAL_STORAGE_KEY);
   if (stringToArray) {
     userQuizzIDs = JSON.parse(stringToArray);
-    userQuizzIDs.push(quizID);
+    userQuizzIDs.push({ id: quizID, key: quizKey });
     let arrayToString = JSON.stringify(userQuizzIDs);
     localStorage.setItem(LOCAL_STORAGE_KEY, arrayToString);
   } else {
-    userQuizzIDs.push(quizID);
+    userQuizzIDs.push({ id: quizID, key: quizKey });
     let arrayToString = JSON.stringify(userQuizzIDs);
     localStorage.setItem(LOCAL_STORAGE_KEY, arrayToString);
   }
+  console.log(localStorage.getItem(LOCAL_STORAGE_KEY));
 }
 
 function isValidUrl(_string) {
@@ -575,6 +627,53 @@ function renderNewQuizQuestionsInputs() {
       `openAccordionForm("quiz-creation__questions", ${i})`
     );
   }
+  if (quizToEdit) {
+    for (let i = 0; i < newQuizNumberOfQuestions; i++) {
+      if (!quizToEdit.questions[i]) {
+        break;
+      }
+      document.querySelector(
+        `.quiz-creation__questions #question${i + 1}`
+      ).value = quizToEdit.questions[i].title;
+      document.querySelector(
+        `.quiz-creation__questions #question${i + 1}-color`
+      ).value = quizToEdit.questions[i].color;
+      document.querySelector(
+        `.quiz-creation__questions #question${i + 1}-correct-answer`
+      ).value = quizToEdit.questions[i].answers[0].text;
+      document.querySelector(
+        `.quiz-creation__questions #question${i + 1}-correct-answer-image-URL`
+      ).value = quizToEdit.questions[i].answers[0].image;
+      document.querySelector(
+        `.quiz-creation__questions #question${i + 1}-incorrect-answer1`
+      ).value = quizToEdit.questions[i].answers[1].text;
+      document.querySelector(
+        `.quiz-creation__questions #question${
+          i + 1
+        }-incorrect-answer1-image-URL`
+      ).value = quizToEdit.questions[i].answers[1].image;
+      if (quizToEdit.questions[i].answers[2]) {
+        document.querySelector(
+          `.quiz-creation__questions #question${i + 1}-incorrect-answer2`
+        ).value = quizToEdit.questions[i].answers[2].text;
+        document.querySelector(
+          `.quiz-creation__questions #question${
+            i + 1
+          }-incorrect-answer2-image-URL`
+        ).value = quizToEdit.questions[i].answers[2].image;
+      }
+      if (quizToEdit.questions[i].answers[3]) {
+        document.querySelector(
+          `.quiz-creation__questions #question${i + 1}-incorrect-answer3`
+        ).value = quizToEdit.questions[i].answers[3].text;
+        document.querySelector(
+          `.quiz-creation__questions #question${
+            i + 1
+          }-incorrect-answer3-image-URL`
+        ).value = quizToEdit.questions[i].answers[3].image;
+      }
+    }
+  }
 }
 
 function openAccordionForm(div, formToOpen) {
@@ -640,9 +739,51 @@ function renderNewQuizLevelsInputs() {
       `openAccordionForm("quiz-creation__levels" ,${i})`
     );
   }
+  if (quizToEdit) {
+    for (let i = 0; i < newQuizNumberOfLevels; i++) {
+      if (!quizToEdit.levels[i]) {
+        break;
+      }
+      document.querySelector(
+        `.quiz-creation__levels #level${i + 1}-title`
+      ).value = quizToEdit.levels[i].title;
+      document.querySelector(
+        `.quiz-creation__levels #level${i + 1}-min-percent`
+      ).value = quizToEdit.levels[i].minValue;
+      document.querySelector(
+        `.quiz-creation__levels #level${i + 1}-image-URL`
+      ).value = quizToEdit.levels[i].image;
+      document.querySelector(
+        `.quiz-creation__levels #level${i + 1}-description`
+      ).value = quizToEdit.levels[i].text;
+    }
+  }
 }
 
-function editQuiz(quizID) {}
+function editQuiz(quizID) {
+  let promisse = axios.get(QUIZ_API_URL + quizID);
+  promisse.then((response) => {
+    let quiz = response.data;
+    quizToEdit = quiz;
+    document.querySelector(".quiz-creation__basic-info #quiz-title").value =
+      quiz.title;
+    document.querySelector(".quiz-creation__basic-info #quiz-URL").value =
+      quiz.image;
+    document.querySelector(".quiz-creation__basic-info #quiz-questions").value =
+      quiz.questions.length;
+    document.querySelector(".quiz-creation__basic-info #quiz-levels").value =
+      quiz.levels.length;
+    screenFocus(".quiz-creation");
+  });
+}
+
+function goHomeEditQuiz() {
+  screenFocus(".quiz-list");
+  document.querySelector(".quiz-creation__success").classList.add("hidden");
+  document
+    .querySelector(".quiz-creation__basic-info")
+    .classList.remove("hidden");
+}
 
 function deleteQuiz(quizID) {}
 
@@ -681,78 +822,84 @@ function teste3() {
   promisse.then((response) => console.log(response.data));
 }
 
-// function createQuizz(){
-//   let promisse = axios.post('https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes',{
-//     title: "AGORA FOI!",
-//     image: "https://http.cat/411.jpg",
-//     questions: [
-//       {
-//         title: "Título da pergunta 1",
-//         color: "#123456",
-//         answers: [
-//           {
-//             text: "Texto da resposta 1",
-//             image: "https://http.cat/411.jpg",
-//             isCorrectAnswer: true
-//           },
-//           {
-//             text: "Texto da resposta 2",
-//             image: "https://http.cat/412.jpg",
-//             isCorrectAnswer: false
-//           }
-//         ]
-//       },
-//       {
-//         title: "Título da pergunta 2",
-//         color: "#123456",
-//         answers: [
-//           {
-//             text: "Texto da resposta 1",
-//             image: "https://http.cat/411.jpg",
-//             isCorrectAnswer: true
-//           },
-//           {
-//             text: "Texto da resposta 2",
-//             image: "https://http.cat/412.jpg",
-//             isCorrectAnswer: false
-//           }
-//         ]
-//       },
-//       {
-//         title: "Título da pergunta 3",
-//         color: "#123456",
-//         answers: [
-//           {
-//             text: "Texto da resposta 1",
-//             image: "https://http.cat/411.jpg",
-//             isCorrectAnswer: true
-//           },
-//           {
-//             text: "Texto da resposta 2",
-//             image: "https://http.cat/412.jpg",
-//             isCorrectAnswer: false
-//           }
-//         ]
-//       }
-//     ],
-//     levels: [
-//       {
-//         title: "Título do nível 1",
-//         image: "https://http.cat/411.jpg",
-//         text: "Descrição do nível 1",
-//         minValue: 0
-//       },
-//       {
-//         title: "Título do nível 2",
-//         image: "https://http.cat/412.jpg",
-//         text: "Descrição do nível 2",
-//         minValue: 50
-//       }
-//     ]
-//   });
-//   promisse.then((response)=> pushQuizIdToLocalStorage(response.data.id));
-// }
-// createQuizz();
+function createQuizz() {
+  let promisse = axios.post(
+    "https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes",
+    {
+      title: "AGORA FOI! com Secret Key ahlakjdhasdjk",
+      image: "https://http.cat/411.jpg",
+      questions: [
+        {
+          title: "Título da pergunta 1",
+          color: "#123456",
+          answers: [
+            {
+              text: "Texto da resposta 1",
+              image: "https://http.cat/411.jpg",
+              isCorrectAnswer: true,
+            },
+            {
+              text: "Texto da resposta 2",
+              image: "https://http.cat/412.jpg",
+              isCorrectAnswer: false,
+            },
+          ],
+        },
+        {
+          title: "Título da pergunta 2",
+          color: "#123456",
+          answers: [
+            {
+              text: "Texto da resposta 1",
+              image: "https://http.cat/411.jpg",
+              isCorrectAnswer: true,
+            },
+            {
+              text: "Texto da resposta 2",
+              image: "https://http.cat/412.jpg",
+              isCorrectAnswer: false,
+            },
+          ],
+        },
+        {
+          title: "Título da pergunta 3",
+          color: "#123456",
+          answers: [
+            {
+              text: "Texto da resposta 1",
+              image: "https://http.cat/411.jpg",
+              isCorrectAnswer: true,
+            },
+            {
+              text: "Texto da resposta 2",
+              image: "https://http.cat/412.jpg",
+              isCorrectAnswer: false,
+            },
+          ],
+        },
+      ],
+      levels: [
+        {
+          title: "Título do nível 1",
+          image: "https://http.cat/411.jpg",
+          text: "Descrição do nível 1fhgfhgfhfghfghfghfhfghfgf",
+          minValue: 0,
+        },
+        {
+          title: "Título do nível 2",
+          image: "https://http.cat/412.jpg",
+          text: "Descrição do nível 2ghfghfghfghfhfghfhghfgfhghf",
+          minValue: 50,
+        },
+      ],
+    }
+  );
+  promisse.then((response) => {
+    console.log(response);
+    pushQuizIdToLocalStorage(response.data.id, response.data.key);
+  });
+}
+//createQuizz();
 
 /*
 function renderQuizzesPreview(response) {

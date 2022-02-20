@@ -153,7 +153,8 @@ header h1 {
   font-family: Roboto;
   font-size: 19px;
   line-height: 22px;
-  color: #ffffff;
+  /* color: #ffffff; */
+  color: red;
   max-width: 100%;
   overflow: hidden;
 }
@@ -179,6 +180,7 @@ header h1 {
   color: white;
   height: 25px;
   width: 25px;
+  z-index: 1;
 }
 
 /*---- Answer quizz page ----*/
@@ -468,7 +470,7 @@ button.answer-quizz__play-again-button {
   flex-direction: column;
 }
 
-.quiz-creation__success .quiz-preview {
+.quiz-creation__success .quizz-preview {
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 24px;
