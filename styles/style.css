@@ -152,7 +152,7 @@ header h1 {
 .quizz-preview p {
   font-family: Roboto;
   font-size: 19px;
-  line-height: 22px; 
+  line-height: 22px;
   color: #ffffff;
   font-weight: 400;
   max-width: 100%;
@@ -510,7 +510,8 @@ button.answer-quizz__play-again-button {
 }
 
 .form--accordion input,
-.form--accordion textarea {
+.form--accordion textarea,
+.form--accordion p {
   display: none;
 }
 
@@ -520,6 +521,19 @@ button.answer-quizz__play-again-button {
 
 .form--accordion h2:first-of-type {
   display: block;
+}
+
+.quiz-creation .quiz-creation__input--validation-error {
+  background-color: #ffe9e9;
+}
+
+.quiz-creation .quiz-creation__p--validation-error {
+  font-size: 16px;
+  color: #ec362d;
+}
+
+input:-internal-autofill-selected.quiz-creation__input--validation-error {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0), inset 0 0 0 100px #ffe9e9;
 }
 
 /*---- Utility ----*/
