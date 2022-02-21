@@ -35,7 +35,6 @@ function renderQuizzesPreview(response) {
   quizzes = response.data;
   const idListJSON = localStorage.getItem(LOCAL_STORAGE_KEY);
   const idList = JSON.parse(idListJSON);
-  console.log(idList);
   quizzes.forEach((element) => {
     if (idList !== null) {
       if (idList.find((id) => id.id === element.id)) {
@@ -114,7 +113,7 @@ function printSelectedAnswer(quizz) {
     const questionsInnerHTML = document.querySelector(`.questions--${cont}`);
 
     questionsInnerHTML.innerHTML += `
-      <div class="answer-quizz__question-tittle--${cont}">
+      <div class="answer-quizz__question-tittle--${cont}" data-identifier="question">
         <h4>${questions.title}</h4>
       </div>`;
     questionsInnerHTML.innerHTML += `<div class="answer-quizz__answers--${cont}"></div>`;
@@ -129,7 +128,7 @@ function printSelectedAnswer(quizz) {
           `.answer-quizz__answers--${cont}`
         );
         quizzAnswers.innerHTML += `
-        <div class="answers correct-answer" onclick="selectAnswer(this)">
+        <div class="answers correct-answer" onclick="selectAnswer(this)" data-identifier="answer">
           <img src="${answer.image}" alt="answer-img">
           <span>${answer.text}</span>
         </div>
@@ -139,7 +138,7 @@ function printSelectedAnswer(quizz) {
           `.answer-quizz__answers--${cont}`
         );
         quizzAnswers.innerHTML += `
-        <div class="answers" onclick="selectAnswer(this)">
+        <div class="answers" onclick="selectAnswer(this)" data-identifier="answer">
           <img src="${answer.image}" alt="answer-img">
           <span>${answer.text}</span>
         </div>
@@ -216,7 +215,7 @@ function isFinish() {
         quizzLevel.forEach((el) => {
           if (el.minValue === closest) {
             section.innerHTML += `
-            <div class="quizz-result">
+            <div class="quizz-result" data-identifier="quizz-result">
               <div class="quizz-result__header">
                 <h4>${playerLv}% ${el.title}</h4>
               </div>
@@ -478,7 +477,6 @@ function createQuizStep2() {
   renderNewQuizLevelsInputs();
   document.querySelector(".quiz-creation__questions").classList.add("hidden");
   document.querySelector(".quiz-creation__levels").classList.remove("hidden");
-  console.log(newQuizQuestions);
 }
 
 function createQuizFinalStep() {
@@ -572,7 +570,6 @@ function createQuizFinalStep() {
   if (quizToEdit) {
     let stringToArray = localStorage.getItem(LOCAL_STORAGE_KEY);
     let userQuizzIDs = JSON.parse(stringToArray);
-    console.log(userQuizzIDs);
     let quizToEditSecretKey;
     for (let i = 0; i < userQuizzIDs.length; i++) {
       if (quizToEdit.id === userQuizzIDs[i].id) {
@@ -580,8 +577,6 @@ function createQuizFinalStep() {
         break;
       }
     }
-    console.log(quizToEditSecretKey);
-    console.log(newQuiz);
     let config = {
       headers: {
         "Secret-Key": quizToEditSecretKey,
@@ -614,7 +609,6 @@ function createQuizFinalStep() {
   let promisse = axios.post(QUIZ_API_URL, newQuiz);
   loadScreen(true);
   promisse.then((response) => {
-    console.log(response);
     getQuizzes();
     pushQuizIdToLocalStorage(response.data.id, response.data.key);
     document
@@ -635,7 +629,6 @@ function createQuizFinalStep() {
     newQuizQuestions = [];
   });
   promisse.catch((response) => {
-    console.log(response);
     loadScreen(false);
     newQuizLevels = [];
     newQuizQuestions = [];
@@ -724,7 +717,6 @@ function pushQuizIdToLocalStorage(quizID, quizKey) {
     let arrayToString = JSON.stringify(userQuizzIDs);
     localStorage.setItem(LOCAL_STORAGE_KEY, arrayToString);
   }
-  console.log(localStorage.getItem(LOCAL_STORAGE_KEY));
 }
 
 function isValidUrl(_string) {
@@ -1009,14 +1001,12 @@ function goHomeEditQuiz() {
 }
 
 function deleteQuiz(quizID) {
-  const result = window.confirm("Tem certeza que quer excluir o quizz?");
+  const result = window.confirm("Deseja excluir esse Quizz?");
   if (result) {
     quizToDeleteID = quizID;
     let stringToArray = localStorage.getItem(LOCAL_STORAGE_KEY);
     let userQuizzIDs = JSON.parse(stringToArray);
     let quizToDeleteSecretKey;
-    console.log(userQuizzIDs);
-
     for (let i = 0; i < userQuizzIDs.length; i++) {
       if (quizToDeleteID === userQuizzIDs[i].id) {
         quizToDeleteSecretKey = userQuizzIDs[i].key;
@@ -1038,115 +1028,80 @@ function deleteQuiz(quizID) {
 
 getQuizzes();
 
-function teste() {
-  document.querySelector(
-    ".user-quizzes-list__empty-list"
-  ).innerHTML = `<ul><li class="quizz-preview" onclick="answerQuiz(10)">
-  <img src="https://ciclovivo.com.br/wp-content/uploads/2020/09/tree-3822149_1280.jpg"/>
-  <div class="quizz-preview__linear-gradient">
-    <p>Teste oioi
-    </p>
-  </div>
-  <div class = "quizz-preview__options">
-    <ion-icon name="create-outline"></ion-icon>
-    <ion-icon name="trash-outline"></ion-icon>
-  <div>
-</li></ul>`;
-}
-
-function teste2() {
-  screenFocus(".quiz-creation");
-  document.querySelector(".quiz-creation__basic-info").classList.add("hidden");
-  document
-    .querySelector(".quiz-creation__questions")
-    .classList.remove("hidden");
-  newQuizNumberOfQuestions = 3;
-  renderNewQuizQuestionsInputs();
-}
-
-function teste3() {
-  let valorSerializado = localStorage.getItem(LOCAL_STORAGE_KEY);
-  let valor = JSON.parse(valorSerializado);
-  let promisse = axios.get(QUIZ_API_URL + valor[0]);
-  promisse.then((response) => console.log(response.data));
-}
-
-function createQuizz() {
-  let promisse = axios.post(
-    "https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes",
-    {
-      title: "AGORA FOI! com Secret Key ahlakjdhasdjk",
-      image: "https://http.cat/411.jpg",
-      questions: [
-        {
-          title: "Título da pergunta 1",
-          color: "#123456",
-          answers: [
-            {
-              text: "Texto da resposta 1",
-              image: "https://http.cat/411.jpg",
-              isCorrectAnswer: true,
-            },
-            {
-              text: "Texto da resposta 2",
-              image: "https://http.cat/412.jpg",
-              isCorrectAnswer: false,
-            },
-          ],
-        },
-        {
-          title: "Título da pergunta 2",
-          color: "#123456",
-          answers: [
-            {
-              text: "Texto da resposta 1",
-              image: "https://http.cat/411.jpg",
-              isCorrectAnswer: true,
-            },
-            {
-              text: "Texto da resposta 2",
-              image: "https://http.cat/412.jpg",
-              isCorrectAnswer: false,
-            },
-          ],
-        },
-        {
-          title: "Título da pergunta 3",
-          color: "#123456",
-          answers: [
-            {
-              text: "Texto da resposta 1",
-              image: "https://http.cat/411.jpg",
-              isCorrectAnswer: true,
-            },
-            {
-              text: "Texto da resposta 2",
-              image: "https://http.cat/412.jpg",
-              isCorrectAnswer: false,
-            },
-          ],
-        },
-      ],
-      levels: [
-        {
-          title: "Título do nível 1",
-          image: "https://http.cat/411.jpg",
-          text: "Descrição do nível 1fhgfhgfhfghfghfghfhfghfgf",
-          minValue: 0,
-        },
-        {
-          title: "Título do nível 2",
-          image: "https://http.cat/412.jpg",
-          text: "Descrição do nível 2ghfghfghfghfhfghfhghfgfhghf",
-          minValue: 50,
-        },
-      ],
-    }
-  );
-  promisse.then((response) => {
-    console.log(response);
-    pushQuizIdToLocalStorage(response.data.id, response.data.key);
-  });
-}
-
+// function createQuizz() {
+//   let promisse = axios.post(
+//     "https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes",
+//     {
+//       title: "AGORA FOI! com Secret Key ahlakjdhasdjk",
+//       image: "https://http.cat/411.jpg",
+//       questions: [
+//         {
+//           title: "Título da pergunta 1",
+//           color: "#123456",
+//           answers: [
+//             {
+//               text: "Texto da resposta 1",
+//               image: "https://http.cat/411.jpg",
+//               isCorrectAnswer: true,
+//             },
+//             {
+//               text: "Texto da resposta 2",
+//               image: "https://http.cat/412.jpg",
+//               isCorrectAnswer: false,
+//             },
+//           ],
+//         },
+//         {
+//           title: "Título da pergunta 2",
+//           color: "#123456",
+//           answers: [
+//             {
+//               text: "Texto da resposta 1",
+//               image: "https://http.cat/411.jpg",
+//               isCorrectAnswer: true,
+//             },
+//             {
+//               text: "Texto da resposta 2",
+//               image: "https://http.cat/412.jpg",
+//               isCorrectAnswer: false,
+//             },
+//           ],
+//         },
+//         {
+//           title: "Título da pergunta 3",
+//           color: "#123456",
+//           answers: [
+//             {
+//               text: "Texto da resposta 1",
+//               image: "https://http.cat/411.jpg",
+//               isCorrectAnswer: true,
+//             },
+//             {
+//               text: "Texto da resposta 2",
+//               image: "https://http.cat/412.jpg",
+//               isCorrectAnswer: false,
+//             },
+//           ],
+//         },
+//       ],
+//       levels: [
+//         {
+//           title: "Título do nível 1",
+//           image: "https://http.cat/411.jpg",
+//           text: "Descrição do nível 1fhgfhgfhfghfghfghfhfghfgf",
+//           minValue: 0,
+//         },
+//         {
+//           title: "Título do nível 2",
+//           image: "https://http.cat/412.jpg",
+//           text: "Descrição do nível 2ghfghfghfghfhfghfhghfgfhghf",
+//           minValue: 50,
+//         },
+//       ],
+//     }
+//   );
+//   promisse.then((response) => {
+//     pushQuizIdToLocalStorage(response.data.id, response.data.key);
+//   });
+// }
 // createQuizz();
